@@ -251,15 +251,20 @@ const DartScoreSelector = () => {
                         50
                     </Button>
                     <Button
-                        onClick={() => revertThrow()}
+                        onClick={() => handleDartSelection(0)}
                         className="w-full bg-blue-500 text-white hover:bg-blue-600 transition duration-200 rounded-lg"
                     >
-                        Revert
+                        0
                     </Button>
                 </div>
 
-                {/* Reset Button */}
                 <div className="flex justify-center mt-4">
+                    <Button
+                        className="w-32 bg-red-500 text-white hover:bg-red-600 transition duration-200 rounded-lg m-2"
+                        onClick={revertThrow}
+                    >
+                        Revert
+                    </Button>
                     <Button
                         className="w-32 bg-red-500 text-white hover:bg-red-600 transition duration-200 rounded-lg m-2"
                         onClick={resetGame}
