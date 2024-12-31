@@ -17,11 +17,14 @@ const DartScoreSelector = () => {
         let finalScore = dartScore;
 
         // Apply Double or Triple multiplier based on state
-        if (isDouble) {
-            finalScore = dartScore * 2;
-        } else if (isTriple) {
-            finalScore = dartScore * 3;
+        if(!(dartScore === 50 || dartScore === 25)) {
+            if (isDouble) {
+                finalScore = dartScore * 2;
+            } else if (isTriple) {
+                finalScore = dartScore * 3;
+            }
         }
+
 
         calculatePossibleScoresToZero(scores[currentScoreIndex] - finalScore);
         setScores((prevScores) => {
@@ -44,6 +47,7 @@ const DartScoreSelector = () => {
                 return newScores;
             });
         }
+        calculatePossibleScoresToZero(scores[(currentScoreIndex + 1) % scores.length])
         setCurrentStartingScore(scores[(currentScoreIndex + 1) % scores.length]);
         setIsDouble(false);
         setIsTriple(false);
@@ -69,7 +73,9 @@ const DartScoreSelector = () => {
             newScores[currentScoreIndex] += dartsThrown[dartsThrown.length - 1];
             return newScores;
         });
+        calculatePossibleScoresToZero(scores[currentScoreIndex] += dartsThrown[dartsThrown.length - 1])
         setDartsThrown((prevScores) => prevScores.slice(0, -1));
+
     }
 
     const resetGame = () => {
@@ -79,11 +85,11 @@ const DartScoreSelector = () => {
         setIsTriple(false); // State for Triple
         setCurrentScoreIndex(0);
         setDartsThrown([]);
+        setScoresToZero([])
     }
 
     const calculatePossibleScoresToZero = (currentScore: number) => {
         setScoresToZero([]);
-        let possibleScoresToZero: number[][] = [];
 
         const allPossibleScores = [
             ...dartScores,                       // Single scores
@@ -91,39 +97,31 @@ const DartScoreSelector = () => {
             ...dartScores.map(score => score * 3)  // Triple scores
         ];
 
+        const allPossibleScoresAsString  = [
+            ...dartScores,                       // Single scores
+            ...dartScores.map(score => "D" + score), // Double scores
+            ...dartScores.map(score => "T" + score)  // Triple scores
+        ];
+
         for (let i = allPossibleScores.length - 1; i >= 0; i--) {
             if (allPossibleScores[i] === currentScore) {
-                possibleScoresToZero.push([allPossibleScores[i]]);
+                setScoresToZero([allPossibleScoresAsString[i]]);
+                return;
             }
             for (let j = allPossibleScores.length - 1; j >= 0; j--) {
                 if (allPossibleScores[i] + allPossibleScores[j] === currentScore) {
-                    possibleScoresToZero.push([allPossibleScores[i], allPossibleScores[j]]);
+                    setScoresToZero([allPossibleScoresAsString[i], allPossibleScoresAsString[j]]);
+                    return;
                 }
                 for (let k = allPossibleScores.length - 1; k >= 0; k--) {
                     if (allPossibleScores[i] + allPossibleScores[j] + allPossibleScores[k] === currentScore) {
-                        // Add combination of darts that equals the target score
-                        possibleScoresToZero.push([allPossibleScores[i], allPossibleScores[j], allPossibleScores[k]]);
+                        setScoresToZero([allPossibleScoresAsString[i], allPossibleScoresAsString[j], allPossibleScoresAsString[k]]);
+                        return;
                     }
                 }
             }
         }
 
-        if (possibleScoresToZero.length === 0) return;  // Handle the case if the input array is empty
-
-
-        let minArray = possibleScoresToZero[0]; // Start with the first array
-        let minLength = minArray.length;
-
-        // Loop through the remaining arrays to find the one with the minimum length
-        for (let i = 1; i < possibleScoresToZero.length; i++) {
-            console.log(possibleScoresToZero)
-            if (possibleScoresToZero[i].length < minLength) {
-                minArray = possibleScoresToZero[i]; // Update minArray to the new array with fewer elements
-                minLength = possibleScoresToZero[i].length;
-            }
-        }
-
-        setScoresToZero(minArray);
     }
 
     // Function to check if any player has won
@@ -202,7 +200,7 @@ const DartScoreSelector = () => {
 
                 <div className="flex items-center m-6">
                     <Subtitle>
-                        Possible Options to throw:
+                        Possible Options to end game:
                     </Subtitle>
                     {scoresToZero.map((score, idx) => (
                         <Title key={idx} className='text-center text-2xl text-gray-800 mb ml-2'>
