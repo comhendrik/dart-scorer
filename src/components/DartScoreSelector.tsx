@@ -3,9 +3,9 @@ import { Card, Title, Button, Subtitle } from "@tremor/react";
 
 const DartScoreSelector = () => {
     const [scoresToZero, setScoresToZero] = useState([]);
-    const [scores, setScores] = useState([10, 201, 230, 45]);
-    const [playerNames, setPlayerNames] = useState(["Max", "Lisa", "Hendrik", "Jane"]);
-    const [currentStartingScore, setCurrentStartingScore] = useState(301);
+    const [scores, setScores] = useState([301,301]);
+    const [playerNames, setPlayerNames] = useState(["Hendrik", "Susanne"]);
+    const [currentStartingScore, setCurrentStartingScore] = useState(10);
     const [isDouble, setIsDouble] = useState(false); // State for Double
     const [isTriple, setIsTriple] = useState(false); // State for Triple
     const [currentScoreIndex, setCurrentScoreIndex] = useState(0);
@@ -73,7 +73,7 @@ const DartScoreSelector = () => {
     }
 
     const resetGame = () => {
-        setScores([301, 301, 301, 301]);
+        setScores([301, 301]);
         setCurrentStartingScore(301);
         setIsDouble(false); // State for Double
         setIsTriple(false); // State for Triple
@@ -134,10 +134,13 @@ const DartScoreSelector = () => {
     const winnerIndex = scores.findIndex(score => score === 0);
     const winnerName = winnerIndex !== -1 ? playerNames[winnerIndex] : null;
 
+    const loserIndex = scores.findIndex(score => score < 0);
+    const loserName = loserIndex !== -1 ? playerNames[loserIndex] : null;
+
     return (
         <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-500 to-indigo-500">
             <Card className="max-w-lg w-full p-6 shadow-lg bg-white rounded-lg">
-                <div className="flex justify-between items-center m-6">
+                <div className="flex justify-around items-center m-6">
                     {scores.map((score, index) => (
                         <div key={index}>
                             <Title
@@ -169,31 +172,44 @@ const DartScoreSelector = () => {
                     </div>
                 )}
 
-                {dartsThrown.length > 0 && (
-                    <div className="flex items-center m-6">
-                        <Subtitle>
-                            Played Darts:
-                        </Subtitle>
-                        {dartsThrown.map((score, idx) => (
-                            <Title key={idx} className='text-center text-2xl text-gray-800 mb ml-2'>
-                                {score}
+                {loserName && (
+                    <div className="my-6">
+                        <Card className="bg-red-100 border-red-400 border-2 p-4 rounded-lg">
+                            <Title className="text-center text-xl text-red-600">
+                                {loserName} has thrown too much!
                             </Title>
-                        ))}
+                            <Button
+                                onClick={goToNextPlayer}
+                                variant={"secondary"}
+                                className="w-full bg-blue-500 text-white hover:bg-blue-600 transition duration-200 mt-4 rounded-lg"
+                            >
+                                Continue
+                            </Button>
+                        </Card>
                     </div>
                 )}
 
-                {scoresToZero.length > 0 && (
-                    <div className="flex items-center m-6">
-                        <Subtitle>
-                            Possible Options to throw:
-                        </Subtitle>
-                        {scoresToZero.map((score, idx) => (
-                            <Title key={idx} className='text-center text-2xl text-gray-800 mb ml-2'>
-                                {score}
-                            </Title>
-                        ))}
-                    </div>
-                )}
+                <div className="flex items-center m-6">
+                    <Subtitle>
+                        Played Darts:
+                    </Subtitle>
+                    {dartsThrown.map((score, idx) => (
+                        <Title key={idx} className='text-center text-2xl text-gray-800 mb ml-2'>
+                            {score}
+                        </Title>
+                    ))}
+                </div>
+
+                <div className="flex items-center m-6">
+                    <Subtitle>
+                        Possible Options to throw:
+                    </Subtitle>
+                    {scoresToZero.map((score, idx) => (
+                        <Title key={idx} className='text-center text-2xl text-gray-800 mb ml-2'>
+                            {score}
+                        </Title>
+                    ))}
+                </div>
 
                 {/* Grid layout for selecting dart values */}
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 mb-6">
@@ -212,13 +228,13 @@ const DartScoreSelector = () => {
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 mb-6">
                     <Button
                         onClick={toggleDouble}
-                        className={`w-full ${isDouble ? 'bg-green-500' : 'bg-blue-500'} text-white hover:bg-blue-600 transition duration-200 rounded-lg`}
+                        className={`w-full ${isDouble ? 'bg-green-500 hover:bg-green-600 ' : 'bg-blue-500 hover:bg-blue-600 '} text-white transition duration-200 rounded-lg`}
                     >
                         Double
                     </Button>
                     <Button
                         onClick={toggleTriple}
-                        className={`w-full ${isTriple ? 'bg-yellow-500' : 'bg-blue-500'} text-white hover:bg-blue-600 transition duration-200 rounded-lg`}
+                        className={`w-full ${isTriple ? 'bg-yellow-500 hover:bg-yellow-600' : 'bg-blue-500 hover:bg-blue-600'} text-white  transition duration-200 rounded-lg`}
                     >
                         Triple
                     </Button>
