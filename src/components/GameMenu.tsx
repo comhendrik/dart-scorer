@@ -1,8 +1,6 @@
-// components/GameMenu.js
 import React, { useState } from 'react';
-import { Button, Card, Select, SelectItem, TextInput, Title } from '@tremor/react';
-import { motion } from 'framer-motion';
-import {StarIcon, UsersIcon} from "@heroicons/react/24/solid";
+import { Button, Card, Subtitle, TextInput, Title } from '@tremor/react';
+import { XCircleIcon, PlusIcon } from "@heroicons/react/24/solid";
 
 function GameMenu({ onStartGame }) {
     const [gameMode, setGameMode] = useState('301');
@@ -12,63 +10,61 @@ function GameMenu({ onStartGame }) {
         setPlayerNames([...playerNames, '']);
     };
 
+    const handleRemovePlayer = (index) => {
+        setPlayerNames(playerNames.filter((_, i) => i !== index));
+    };
+
     const handleNameChange = (index, name) => {
         const updatedNames = [...playerNames];
         updatedNames[index] = name;
         setPlayerNames(updatedNames);
     };
 
-    const handleStartGame = () => {
-        onStartGame(gameMode, playerNames.filter(name => name.trim() !== ''));
-    };
-
-    const handleGameModeSelect = (mode) => {
-        alert(`Game mode selected: ${mode}`);
-        // Implement game mode logic here (navigate, start mode, etc.)
-    };
-
     return (
-        <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x:0 }}>
-            <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-500 to-indigo-500">
-                <Card className="w-full max-w-2xl p-8 shadow-lg bg-white rounded-lg">
-                    <Title className="text-center text-3xl mb-6 text-gray-800">
-                        Dart Scoring Game
-                    </Title>
+        <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-500 to-indigo-500">
+            <Card className="max-w-lg w-full p-6 shadow-lg bg-white rounded-lg">
+                <div className="flex flex-col items-center justify-center mt-4">
+                    <Title className="text-4xl font-bold">DartScorer</Title>
+                    <Subtitle>Add Players and click on Play to begin</Subtitle>
+                </div>
 
-                    <div className="flex justify-center space-x-4">
-                        {/* Button for '301' game mode */}
-                        <Button
-                            variant="secondary"
-                            color="blue"
-                            onClick={() => handleGameModeSelect("301")}
-                            icon={UsersIcon}
-                        >
-                            301
-                        </Button>
+                <div className="mt-6">
+                    {playerNames.map((playerName, index) => (
+                        <div key={index} className="flex items-center mb-4">
+                            <TextInput
+                                value={playerName}
+                                placeholder={`Player ${index + 1}`}
+                                onChange={(e) => handleNameChange(index, e.target.value)}
+                                className="flex-grow"
+                            />
+                            <button
+                                onClick={() => handleRemovePlayer(index)}
+                                className="ml-2 text-red-500 hover:text-red-600 transition duration-200"
+                            >
+                                <XCircleIcon className="h-6 w-6" />
+                            </button>
+                        </div>
+                    ))}
+                    <button
+                        onClick={handleAddPlayer}
+                        className="flex items-center text-blue-500 hover:text-blue-600 transition duration-200"
+                    >
+                        <PlusIcon className="h-6 w-6 mr-2" />
+                        Add Player
+                    </button>
+                </div>
 
-                        {/* Button for '501' game mode */}
-                        <Button
-                            variant="secondary"
-                            color="blue"
-                            onClick={() => handleGameModeSelect("501")}
-                            icon={UsersIcon}
-                        >
-                            501
-                        </Button>
-
-                        {/* Button for 'Cricket' game mode */}
-                        <Button
-                            variant="secondary"
-                            color="blue"
-                            onClick={() => handleGameModeSelect("Cricket")}
-                            icon={StarIcon}
-                        >
-                            Cricket
-                        </Button>
-                    </div>
-                </Card>
-            </div>
-        </motion.div>
+                <div className="flex justify-center mt-6">
+                    <Button
+                        disabled={playerNames.length === 0}
+                        className="w-32 bg-green-500 text-white hover:bg-green-600 transition duration-200 rounded-lg"
+                        onClick={() => onStartGame(playerNames)}
+                    >
+                        Play
+                    </Button>
+                </div>
+            </Card>
+        </div>
     );
 }
 
