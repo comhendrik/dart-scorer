@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import { Card, Title, Button, Subtitle } from "@tremor/react";
+import {PresentationChartLineIcon} from "@heroicons/react/16/solid";
 
 function DartScoreSelector({playerNames, onEndGame}) {
     const [startedGame, setStartedGame] = useState(false); // State for Double
@@ -186,7 +187,7 @@ function DartScoreSelector({playerNames, onEndGame}) {
                                 {playerNames[index]}
                             </Subtitle>
                             <Subtitle>
-                                {parseFloat(averages[index].toFixed(1))}
+                                ⊘ {parseFloat(averages[index].toFixed(1))}
                             </Subtitle>
                         </div>
                     ))}
@@ -301,7 +302,7 @@ function DartScoreSelector({playerNames, onEndGame}) {
                         className="w-32 bg-red-500 text-white hover:bg-red-600 transition duration-200 rounded-lg m-2"
                         onClick={onEndGame}
                     >
-                        End Game
+                        End
                     </Button>
                     <Button
                         className="w-32 bg-red-500 text-white hover:bg-red-600 transition duration-200 rounded-lg m-2"
