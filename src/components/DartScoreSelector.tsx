@@ -3,9 +3,9 @@ import { Card, Title, Button, Subtitle } from "@tremor/react";
 
 const DartScoreSelector = () => {
     const [scoresToZero, setScoresToZero] = useState([]);
-    const [scores, setScores] = useState([301,301]);
-    const [playerNames, setPlayerNames] = useState(["Hendrik", "Susanne"]);
-    const [currentStartingScore, setCurrentStartingScore] = useState(10);
+    const [scores, setScores] = useState([301,301, 301, 301]);
+    const [playerNames, setPlayerNames] = useState(["Hendrik", "Peppi", "Melvin", "Hannes"]);
+    const [currentStartingScore, setCurrentStartingScore] = useState(301);
     const [isDouble, setIsDouble] = useState(false); // State for Double
     const [isTriple, setIsTriple] = useState(false); // State for Triple
     const [currentScoreIndex, setCurrentScoreIndex] = useState(0);
@@ -79,7 +79,7 @@ const DartScoreSelector = () => {
     }
 
     const resetGame = () => {
-        setScores([301, 301]);
+        setScores([301, 301, 301, 301]);
         setCurrentStartingScore(301);
         setIsDouble(false); // State for Double
         setIsTriple(false); // State for Triple
@@ -94,13 +94,18 @@ const DartScoreSelector = () => {
         const allPossibleScores = [
             ...dartScores,                       // Single scores
             ...dartScores.map(score => score * 2), // Double scores
-            ...dartScores.map(score => score * 3)  // Triple scores
+            ...dartScores.map(score => score * 3),  // Triple scores
+            25,
+            50
         ];
 
         const allPossibleScoresAsString  = [
             ...dartScores,                       // Single scores
             ...dartScores.map(score => "D" + score), // Double scores
-            ...dartScores.map(score => "T" + score)  // Triple scores
+            ...dartScores.map(score => "T" + score),  // Triple scores
+            "SINGLE BULL",
+            "BULL",
+
         ];
 
         for (let i = allPossibleScores.length - 1; i >= 0; i--) {
