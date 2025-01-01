@@ -250,7 +250,7 @@ function DartScoreSelector({playerNames, onEndGame}) {
                 </div>
 
                 {/* Grid layout for selecting dart values */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 mb-6">
+                <div className="grid grid-cols-5 gap-4 mb-6">
                     {dartScores.map((dart) => (
                         <Button
                             key={dart}
@@ -263,7 +263,7 @@ function DartScoreSelector({playerNames, onEndGame}) {
                 </div>
 
                 {/* Grid layout for toggling Double and Triple */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 mb-6">
+                <div className="grid grid-cols-5 gap-4 mb-6">
                     <Button
                         onClick={toggleDouble}
                         className={`w-full ${isDouble ? 'bg-green-500 hover:bg-green-600 ' : 'bg-blue-500 hover:bg-blue-600 '} text-white transition duration-200 rounded-lg`}
