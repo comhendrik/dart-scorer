@@ -196,14 +196,14 @@ function DartScoreSelector({playerNames, onEndGame}) {
                 {/* Show alert when player wins */}
                 {winnerName && (
                     <div className="my-6">
-                        <Card className="bg-green-100 border-green-400 border-2 p-4 rounded-lg">
+                        <Card className="flex flex-col items-center bg-green-100 border-green-400 border-2 p-4 rounded-lg">
                             <Title className="text-center text-xl text-green-600">
                                 {winnerName} has won!
                             </Title>
                             <Button
                                 onClick={resetGame}
                                 variant={"secondary"}
-                                className="w-full bg-blue-500 text-white hover:bg-blue-600 transition duration-200 mt-4 rounded-lg"
+                                className="bg-blue-500 text-white hover:bg-blue-600 transition duration-200 mt-4 rounded-lg p-2"
                             >
                                 Reset Game
                             </Button>
@@ -213,14 +213,14 @@ function DartScoreSelector({playerNames, onEndGame}) {
 
                 {loserName && (
                     <div className="my-6">
-                        <Card className="bg-red-100 border-red-400 border-2 p-4 rounded-lg">
+                        <Card className="flex flex-col items-center bg-red-100 border-red-400 border-2 p-4 rounded-lg">
                             <Title className="text-center text-xl text-red-600">
                                 {loserName} has thrown too much!
                             </Title>
                             <Button
                                 onClick={goToNextPlayer}
                                 variant={"secondary"}
-                                className="w-full bg-blue-500 text-white hover:bg-blue-600 transition duration-200 mt-4 rounded-lg"
+                                className="bg-blue-500 text-white hover:bg-blue-600 transition duration-200 mt-4 rounded-lg p-2"
                             >
                                 Continue
                             </Button>
