@@ -3,7 +3,6 @@ import { Button, Card, Subtitle, TextInput, Title } from '@tremor/react';
 import { XCircleIcon, PlusIcon } from "@heroicons/react/24/solid";
 
 function GameMenu({ onStartGame }) {
-    const [gameMode, setGameMode] = useState('301');
     const [playerNames, setPlayerNames] = useState(['']);
 
     const handleAddPlayer = () => {
@@ -57,7 +56,7 @@ function GameMenu({ onStartGame }) {
                 <div className="flex justify-center mt-6">
                     <Button
                         disabled={playerNames.length === 0}
-                        className="w-32 bg-green-500 text-white hover:bg-green-600 transition duration-200 rounded-lg"
+                        className={`w-32 ${playerNames.length === 0 ? "bg-gray-400" : "bg-green-500 hover:bg-green-600"} text-white transition duration-200 rounded-lg`}
                         onClick={() => onStartGame(playerNames)}
                     >
                         Play

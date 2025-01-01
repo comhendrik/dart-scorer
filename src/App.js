@@ -7,12 +7,21 @@ function App() {
   const [playerNames, setPlayerNames] = useState(['']);
 
 
+   const onStartGame = (playerNames) => {
+     setPlayerNames(playerNames)
+     setShowMenu(false)
+   }
+
+   const onEndGame = () => {
+     setShowMenu(true)
+   }
+
   if (showMenu) return (
-      <GameMenu />
+      <GameMenu onStartGame={onStartGame} />
   );
 
   return (
-      <DartScoreSelector />
+      <DartScoreSelector playerNames={playerNames} onEndGame={onEndGame}/>
   );
 
 

@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { Card, Title, Button, Subtitle } from "@tremor/react";
 
-const DartScoreSelector = () => {
+function DartScoreSelector({playerNames, onEndGame}) {
     const [scoresToZero, setScoresToZero] = useState([]);
-    const [scores, setScores] = useState([301,301, 301, 301]);
-    const [playerNames, setPlayerNames] = useState(["Hendrik", "Peppi", "Melvin", "Hannes"]);
+    const [scores, setScores] = useState([]);
     const [currentStartingScore, setCurrentStartingScore] = useState(301);
     const [isDouble, setIsDouble] = useState(false); // State for Double
     const [isTriple, setIsTriple] = useState(false); // State for Triple
@@ -12,6 +11,10 @@ const DartScoreSelector = () => {
     const [dartsThrown, setDartsThrown] = useState([]);
     const dartScores = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]; // Dart score values
 
+
+    useEffect(() => {
+        setScores(Array(playerNames.length).fill(301))
+    }, []);
     const handleDartSelection = (dartScore) => {
         if (dartsThrown.length === 3) { return }
         let finalScore = dartScore;
@@ -79,7 +82,7 @@ const DartScoreSelector = () => {
     }
 
     const resetGame = () => {
-        setScores([301, 301, 301, 301]);
+        setScores(Array(playerNames.length).fill(301))
         setCurrentStartingScore(301);
         setIsDouble(false); // State for Double
         setIsTriple(false); // State for Triple
@@ -93,18 +96,20 @@ const DartScoreSelector = () => {
 
         const allPossibleScores = [
             ...dartScores,                       // Single scores
+            25,
+            50,
             ...dartScores.map(score => score * 2), // Double scores
             ...dartScores.map(score => score * 3),  // Triple scores
-            25,
-            50
+
         ];
 
         const allPossibleScoresAsString  = [
             ...dartScores,                       // Single scores
-            ...dartScores.map(score => "D" + score), // Double scores
-            ...dartScores.map(score => "T" + score),  // Triple scores
             "SINGLE BULL",
             "BULL",
+            ...dartScores.map(score => "D" + score), // Double scores
+            ...dartScores.map(score => "T" + score),  // Triple scores
+
 
         ];
 
@@ -262,6 +267,12 @@ const DartScoreSelector = () => {
                 </div>
 
                 <div className="flex justify-center mt-4">
+                    <Button
+                        className="w-32 bg-red-500 text-white hover:bg-red-600 transition duration-200 rounded-lg m-2"
+                        onClick={onEndGame}
+                    >
+                        End Game
+                    </Button>
                     <Button
                         className="w-32 bg-red-500 text-white hover:bg-red-600 transition duration-200 rounded-lg m-2"
                         onClick={revertThrow}
