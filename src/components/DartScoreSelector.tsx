@@ -2,21 +2,30 @@ import React, {useEffect, useState} from "react";
 import { Card, Title, Button, Subtitle } from "@tremor/react";
 
 function DartScoreSelector({playerNames, onEndGame}) {
+    const [startedGame, setStartedGame] = useState(false); // State for Double
     const [scoresToZero, setScoresToZero] = useState([]);
+    const [averages, setAverages] = useState([]);
+    const [averagesCount, setAveragesCount] = useState([]);
     const [scores, setScores] = useState([]);
     const [currentStartingScore, setCurrentStartingScore] = useState(301);
     const [isDouble, setIsDouble] = useState(false); // State for Double
     const [isTriple, setIsTriple] = useState(false); // State for Triple
     const [currentScoreIndex, setCurrentScoreIndex] = useState(0);
     const [dartsThrown, setDartsThrown] = useState([]);
+
     const dartScores = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]; // Dart score values
 
 
     useEffect(() => {
+        if(startedGame) return;
         setScores(Array(playerNames.length).fill(301))
-    }, []);
+        setAverages(Array(playerNames.length).fill(0))
+        setAveragesCount(Array(playerNames.length).fill(0))
+        setStartedGame(true)
+    }, [playerNames.length, startedGame]);
     const handleDartSelection = (dartScore) => {
-        if (dartsThrown.length === 3) { return }
+        if (dartsThrown.length === 3) return
+        if (scores[currentScoreIndex] <= 0) return
         let finalScore = dartScore;
 
         // Apply Double or Triple multiplier based on state
@@ -50,12 +59,33 @@ function DartScoreSelector({playerNames, onEndGame}) {
                 return newScores;
             });
         }
+        if (dartsThrown.length !== 0) {
+
+
+            setAverages((prevAverages) => {
+                const newAverages = [...prevAverages];
+                const sum = dartsThrown.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
+                const currentAverage = newAverages[currentScoreIndex]
+                const playerAverageCount = averagesCount[currentScoreIndex]
+                newAverages[currentScoreIndex] = ((currentAverage * playerAverageCount) + sum) / (playerAverageCount + 1)
+                return newAverages;
+            });
+
+
+            setAveragesCount((prevAveragesCount) => {
+                const newAveragesCount = [...prevAveragesCount];
+                newAveragesCount[currentScoreIndex] += 1;
+                return newAveragesCount;
+            });
+        }
         calculatePossibleScoresToZero(scores[(currentScoreIndex + 1) % scores.length])
         setCurrentStartingScore(scores[(currentScoreIndex + 1) % scores.length]);
         setIsDouble(false);
         setIsTriple(false);
         setDartsThrown([]);
         setCurrentScoreIndex((prev) => (prev + 1) % scores.length);
+
+
     };
 
     const toggleDouble = () => {
@@ -83,6 +113,8 @@ function DartScoreSelector({playerNames, onEndGame}) {
 
     const resetGame = () => {
         setScores(Array(playerNames.length).fill(301))
+        setAverages(Array(playerNames.length).fill(0.0))
+        setAveragesCount(Array(playerNames.length).fill(0))
         setCurrentStartingScore(301);
         setIsDouble(false); // State for Double
         setIsTriple(false); // State for Triple
@@ -134,11 +166,6 @@ function DartScoreSelector({playerNames, onEndGame}) {
 
     }
 
-    // Function to check if any player has won
-    const checkForWinner = () => {
-        return scores.find(score => score === 0);
-    };
-
     const winnerIndex = scores.findIndex(score => score === 0);
     const winnerName = winnerIndex !== -1 ? playerNames[winnerIndex] : null;
 
@@ -157,6 +184,9 @@ function DartScoreSelector({playerNames, onEndGame}) {
                             </Title>
                             <Subtitle>
                                 {playerNames[index]}
+                            </Subtitle>
+                            <Subtitle>
+                                {parseFloat(averages[index].toFixed(1))}
                             </Subtitle>
                         </div>
                     ))}
