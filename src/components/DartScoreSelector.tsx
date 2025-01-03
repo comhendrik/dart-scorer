@@ -208,7 +208,8 @@ function DartScoreSelector({playerNames, onEndGame, gameMode}) {
                 {/* Show alert when player wins */}
                 {winnerName && (
                     <div className="my-6">
-                        <Card className="flex flex-col items-center bg-green-100 border-green-400 border-2 p-4 rounded-lg">
+                        <Card
+                            className="flex flex-col items-center bg-green-100 border-green-400 border-2 p-4 rounded-lg">
                             <Title className="text-center text-xl text-green-600">
                                 {winnerName} has won!
                             </Title>
@@ -309,28 +310,28 @@ function DartScoreSelector({playerNames, onEndGame, gameMode}) {
                     </Button>
                 </div>
 
-                <div className="flex justify-center mt-4">
+                <div className="grid grid-cols-4 gap-4 mb-6">
                     <Button
-                        className="w-32 bg-red-500 text-white hover:bg-red-600 transition duration-200 rounded-lg m-2"
+                        className="w-full bg-red-500 text-white hover:bg-red-600 transition duration-200 rounded-lg"
                         onClick={onEndGame}
                     >
                         End
                     </Button>
                     <Button
-                        className="w-32 bg-red-500 text-white hover:bg-red-600 transition duration-200 rounded-lg m-2"
+                        className="w-full bg-red-500 text-white hover:bg-red-600 transition duration-200 rounded-lg"
                         onClick={revertThrow}
                     >
                         Revert
                     </Button>
                     <Button
-                        className="w-32 bg-red-500 text-white hover:bg-red-600 transition duration-200 rounded-lg m-2"
+                        className="w-full bg-red-500 text-white hover:bg-red-600 transition duration-200 rounded-lg"
                         onClick={resetGame}
                     >
                         Reset
                     </Button>
 
                     <Button
-                        className="w-32 bg-red-500 text-white hover:bg-red-600 transition duration-200 rounded-lg m-2"
+                        className="w-full bg-red-500 text-white hover:bg-red-600 transition duration-200 rounded-lg"
                         onClick={goToNextPlayer}
                     >
                         Next

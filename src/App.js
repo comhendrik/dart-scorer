@@ -1,6 +1,6 @@
 import React, {useState} from "react";
-import GameMenu from "./components/GameMenu.tsx";
-import DartScoreSelector from "./components/DartScoreSelector.tsx";
+import GameMenu from "./components/GameMenu";
+import DartScoreSelector from "./components/DartScoreSelector";
 
 function App() {
   const [showMenu, setShowMenu] = useState(true);
