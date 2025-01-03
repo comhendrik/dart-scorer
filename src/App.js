@@ -5,11 +5,12 @@ import DartScoreSelector from "./components/DartScoreSelector.tsx";
 function App() {
   const [showMenu, setShowMenu] = useState(true);
   const [playerNames, setPlayerNames] = useState(['']);
+  const [gameMode, setGameMode] = useState({})
 
-
-   const onStartGame = (playerNames) => {
-     setPlayerNames(playerNames)
-     setShowMenu(false)
+   const onStartGame = (playerNames, gameMode) => {
+       setPlayerNames(playerNames)
+       setGameMode(gameMode)
+       setShowMenu(false)
    }
 
    const onEndGame = () => {
@@ -20,8 +21,12 @@ function App() {
       <GameMenu onStartGame={onStartGame} />
   );
 
+  if (gameMode.id === 2) return (
+      <div>ATC Mode under development, Please reload</div>
+  );
+
   return (
-      <DartScoreSelector playerNames={playerNames} onEndGame={onEndGame}/>
+      <DartScoreSelector playerNames={playerNames} onEndGame={onEndGame} gameMode={gameMode}/>
   );
 
 

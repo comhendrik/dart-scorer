@@ -4,6 +4,15 @@ import { XCircleIcon, PlusIcon } from "@heroicons/react/24/solid";
 
 function GameMenu({ onStartGame }) {
     const [playerNames, setPlayerNames] = useState(['']);
+    const [selectedMode, setSelectedMode] = useState(null);
+    const [doubleOut, setDoubleOut] = useState(null)
+
+    const gameModes = [
+        { id: 0, label: "301" , count: 301},
+        { id: 1, label: "501", count: 501 },
+        { id: 2, label: "ATC" },
+    ];
+
 
     const handleAddPlayer = () => {
         setPlayerNames([...playerNames, '']);
@@ -40,7 +49,7 @@ function GameMenu({ onStartGame }) {
                                 onClick={() => handleRemovePlayer(index)}
                                 className="ml-2 text-red-500 hover:text-red-600 transition duration-200"
                             >
-                                <XCircleIcon className="h-6 w-6" />
+                                <XCircleIcon className="h-6 w-6"/>
                             </button>
                         </div>
                     ))}
@@ -48,20 +57,43 @@ function GameMenu({ onStartGame }) {
                         onClick={handleAddPlayer}
                         className="flex items-center text-blue-500 hover:text-blue-600 transition duration-200"
                     >
-                        <PlusIcon className="h-6 w-6 mr-2" />
+                        <PlusIcon className="h-6 w-6 mr-2"/>
                         Add Player
                     </button>
+                </div>
+
+                <div className="flex justify-around mt-4">
+                    {gameModes.map((mode) => (
+                        <Button
+                            key={mode.id}
+                            onClick={() => setSelectedMode(mode.id)}
+                            className={`w-32 ${selectedMode === mode.id ? "bg-orange-500 hover:bg-orange-600" : "bg-blue-500 hover:bg-blue-600"} text-white transition duration-200 rounded-lg`}
+                        >{mode.label}</Button>
+                    ))}
+                </div>
+
+                <div className="flex justify-around mt-4">
+                    <Button
+                        onClick={() => setDoubleOut(false)}
+                        className={`w-32 ${doubleOut === false ? "bg-orange-500 hover:bg-orange-600" : "bg-blue-500 hover:bg-blue-600"} text-white transition duration-200 rounded-lg`}
+                    >Single Out</Button>
+                    <Button
+                        onClick={() => setDoubleOut(true)}
+                        className={`w-32 ${doubleOut === true ? "bg-orange-500 hover:bg-orange-600" : "bg-blue-500 hover:bg-blue-600"} text-white transition duration-200 rounded-lg`}
+                    >Double Out</Button>
                 </div>
 
                 <div className="flex justify-center mt-6">
                     <Button
                         disabled={playerNames.length === 0}
                         className={`w-32 ${playerNames.length === 0 ? "bg-gray-400" : "bg-green-500 hover:bg-green-600"} text-white transition duration-200 rounded-lg`}
-                        onClick={() => onStartGame(playerNames)}
+                        onClick={() => onStartGame(playerNames, gameModes[selectedMode])}
                     >
                         Play
                     </Button>
                 </div>
+
+
             </Card>
         </div>
     );

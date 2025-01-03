@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from "react";
 import { Card, Title, Button, Subtitle } from "@tremor/react";
 
-function DartScoreSelector({playerNames, onEndGame, gameMode}) {
+function AroundTheClock({playerNames, onEndGame}) {
     const [startedGame, setStartedGame] = useState(false); // State for Double
-    const [legs, setLegs] = useState([]);
     const [scoresToZero, setScoresToZero] = useState([]);
     const [averages, setAverages] = useState([]);
     const [averagesCount, setAveragesCount] = useState([]);
@@ -19,12 +18,11 @@ function DartScoreSelector({playerNames, onEndGame, gameMode}) {
 
     useEffect(() => {
         if(startedGame) return;
-        setScores(Array(playerNames.length).fill(gameMode.count))
+        setScores(Array(playerNames.length).fill(301))
         setAverages(Array(playerNames.length).fill(0))
-        setLegs(Array(playerNames.length).fill(0))
         setAveragesCount(Array(playerNames.length).fill(0))
         setStartedGame(true)
-    }, [playerNames.length, startedGame, gameMode]);
+    }, [playerNames.length, startedGame]);
     const handleDartSelection = (dartScore) => {
         if (dartsThrown.length === 3) return
         if (scores[currentScoreIndex] <= 0) return
@@ -114,14 +112,6 @@ function DartScoreSelector({playerNames, onEndGame, gameMode}) {
     }
 
     const resetGame = () => {
-
-        if (winnerIndex !== -1) {
-            setLegs((prevLegs) => {
-                const newLegs = [...prevLegs];
-                newLegs[winnerIndex] += 1;
-                return newLegs;
-            });
-        }
         setScores(Array(playerNames.length).fill(301))
         setAverages(Array(playerNames.length).fill(0.0))
         setAveragesCount(Array(playerNames.length).fill(0))
@@ -196,10 +186,7 @@ function DartScoreSelector({playerNames, onEndGame, gameMode}) {
                                 {playerNames[index]}
                             </Subtitle>
                             <Subtitle>
-                                ⊘: {parseFloat(averages[index].toFixed(1))}
-                            </Subtitle>
-                            <Subtitle>
-                                L: {legs[index]}
+                                ⊘ {parseFloat(averages[index].toFixed(1))}
                             </Subtitle>
                         </div>
                     ))}
@@ -341,4 +328,4 @@ function DartScoreSelector({playerNames, onEndGame, gameMode}) {
     );
 }
 
-export default DartScoreSelector;
+export default AroundTheClock;
