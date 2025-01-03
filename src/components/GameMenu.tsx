@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { Button, Card, Subtitle, TextInput, Title } from '@tremor/react';
-import { XCircleIcon, PlusIcon } from "@heroicons/react/24/solid";
+import { XCircleIcon, PlusIcon, MinusIcon } from "@heroicons/react/24/solid";
+import {ChevronLeftIcon, ChevronRightIcon} from "@heroicons/react/16/solid";
 
 function GameMenu({ onStartGame }) {
     const [playerNames, setPlayerNames] = useState(['']);
     const [selectedMode, setSelectedMode] = useState(null);
     const [doubleOut, setDoubleOut] = useState(null)
+    const [sets, setSets] = useState(1);
+    const [legs, setLegs] = useState(1);
 
     const gameModes = [
         { id: 0, label: "301" , count: 301},
@@ -81,6 +84,57 @@ function GameMenu({ onStartGame }) {
                         onClick={() => setDoubleOut(true)}
                         className={`w-32 ${doubleOut === true ? "bg-orange-500 hover:bg-orange-600" : "bg-blue-500 hover:bg-blue-600"} text-white transition duration-200 rounded-lg`}
                     >Double Out</Button>
+                </div>
+
+
+                <div className="flex flex-col items-center gap-8 p-8">
+
+                    {/* Number Controls (Horizontal Layout) */}
+                    <div className="flex gap-12">
+                        {/* Sets Control */}
+                        <div className="flex flex-col items-center gap-4">
+                            <span className="text-xl font-bold text-gray-700">Sets</span>
+                            <div className="flex items-center gap-4">
+                                <Button
+                                    variant="secondary"
+                                    size="lg"
+                                    onClick={() => setSets(Math.max(1, sets-1))}
+                                >
+                                    <ChevronLeftIcon className="h-6 w-6"/>
+                                </Button>
+                                <span className="text-2xl font-bold text-gray-900">{sets}</span>
+                                <Button
+                                    variant="secondary"
+                                    size="lg"
+                                    onClick={() => setSets(sets + 1)}
+                                >
+                                    <ChevronRightIcon className="h-6 w-6"/>
+                                </Button>
+                            </div>
+                        </div>
+
+                        {/* Legs Control */}
+                        <div className="flex flex-col items-center gap-4">
+                            <span className="text-xl font-bold text-gray-700">Legs</span>
+                            <div className="flex items-center gap-4">
+                                <Button
+                                    variant="secondary"
+                                    size="lg"
+                                    onClick={() => setLegs(Math.max(1, legs-1))}
+                                >
+                                    <ChevronLeftIcon className="h-6 w-6"/>
+                                </Button>
+                                <span className="text-2xl font-bold text-gray-900">{legs}</span>
+                                <Button
+                                    variant="secondary"
+                                    size="lg"
+                                    onClick={() => setLegs(legs + 1)}
+                                >
+                                    <ChevronRightIcon className="h-6 w-6"/>
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div className="flex justify-center mt-6">
