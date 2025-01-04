@@ -1,70 +1,77 @@
-# Getting Started with Create React App
+# 🎯 Dart Scorer
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Dart Scorer is a web application designed to help dart players easily track scores, manage game modes, and analyze throws. Built with modern technologies like **React**, **Tailwind CSS**, and the **Tremor** npm package, it offers a sleek and responsive interface for both casual and competitive players.
 
-## Available Scripts
+## 🚀 Features
 
-In the project directory, you can run:
+### Core Functionality
+- **Scoring Darts**: Keep track of scores with an intuitive interface.
+- **Examples for Throws**: Display possible throws to finish a leg.
+- **Game Modes**: Play various dart game modes like 301, 501, or custom games.
+- **Live Updates**: Scores and suggested throws update in real-time.
+- **Player Management**: Add multiple players and switch between turns seamlessly.
 
-### `npm start`
+### Advanced Features
+- **Leg Suggestions**: Receive possible finish options (e.g., for 170: T20, T20, Bull).
+- **Statistics and Analytics**: View metrics like average score per turn, hit rate, and double checkout percentage.
+- **Responsive Design**: Optimized for desktop and mobile use.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🛠️ Built With
 
-### `npm test`
+- **React**: For building the interactive user interface.
+- **Tailwind CSS**: For modern, customizable styling.
+- **Tremor**: For beautiful and interactive data visualization components.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## 📖 Examples
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Scoring Darts
+Add scores directly by entering dart values (e.g., T20 for Triple 20, D10 for Double 10). The app calculates the total and updates the leg status in real time.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Example Throws to End a Leg
+For a target score of 170, suggested throws might include:
+1. Triple 20, Triple 20, Bullseye.
+2. Triple 20, Triple 18, Double 16.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Play Different Game Modes
+- **301/501**: Standard dart games with double-out rule.
+- **Custom Modes**: Configure unique rules and starting scores.
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 📦 Installation
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/dart-scorer.git
+   ```  
+2. Navigate to the project directory:
+   ```bash
+   cd dart-scorer
+   ```  
+3. Install dependencies:
+   ```bash
+   npm install
+   ```  
+4. Start the development server:
+   ```bash
+   npm start
+   ```  
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+---
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## 🌟 Contributing
 
-## Learn More
+Contributions are welcome! Feel free to open an issue or submit a pull request to improve the project.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Enjoy your game! 🎯  
+For questions or suggestions, please reach out to [hendrik0807@icloud.com](mailto:hendrik0807@icloud.com).
 
-### Code Splitting
+--- 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Let me know if you'd like any further adjustments!
