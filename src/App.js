@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import GameMenu from "./components/GameMenu";
 import DartScoreSelector from "./components/DartScoreSelector";
+import AroundTheClock from "./components/AroundTheClock";
 
 function App() {
   const [showMenu, setShowMenu] = useState(true);
@@ -22,7 +23,7 @@ function App() {
   );
 
   if (gameMode.id === 2) return (
-      <div>ATC Mode under development, Please reload</div>
+      <AroundTheClock onEndGame={onEndGame}/>
   );
 
   return (

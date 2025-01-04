@@ -1,19 +1,24 @@
+'use client';
 import React, { useState } from 'react';
 import { Button, Card, Subtitle, TextInput, Title } from '@tremor/react';
-import { XCircleIcon, PlusIcon, MinusIcon } from "@heroicons/react/24/solid";
-import {ChevronLeftIcon, ChevronRightIcon} from "@heroicons/react/16/solid";
+import { XCircleIcon, PlusIcon } from "@heroicons/react/24/solid";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/16/solid";
+import GameMode from "../interfaces/GameMode";
+interface GameMenuProps {
+    onStartGame: (playerNames: string[], gameMode: {}) => {};
+}
 
-function GameMenu({ onStartGame }) {
+function GameMenu({ onStartGame } : GameMenuProps) {
     const [playerNames, setPlayerNames] = useState(['']);
-    const [selectedMode, setSelectedMode] = useState(null);
-    const [doubleOut, setDoubleOut] = useState(null)
+    const [selectedMode, setSelectedMode] = useState(0);
+    const [doubleOut, setDoubleOut] = useState(false)
     const [sets, setSets] = useState(1);
     const [legs, setLegs] = useState(1);
 
-    const gameModes = [
+    const gameModes: GameMode[] = [
         { id: 0, label: "301" , count: 301},
         { id: 1, label: "501", count: 501 },
-        { id: 2, label: "ATC" },
+        { id: 2, label: "ATC", count: 0 },
     ];
 
 
@@ -21,11 +26,11 @@ function GameMenu({ onStartGame }) {
         setPlayerNames([...playerNames, '']);
     };
 
-    const handleRemovePlayer = (index) => {
-        setPlayerNames(playerNames.filter((_, i) => i !== index));
+    const handleRemovePlayer = (index: number) => {
+        setPlayerNames(playerNames.filter((_ : string, i: number) => i !== index));
     };
 
-    const handleNameChange = (index, name) => {
+    const handleNameChange = (index: number, name: string) => {
         const updatedNames = [...playerNames];
         updatedNames[index] = name;
         setPlayerNames(updatedNames);
@@ -36,7 +41,6 @@ function GameMenu({ onStartGame }) {
             <Card className="max-w-lg w-full p-6 shadow-lg bg-white rounded-lg">
                 <div className="flex flex-col items-center justify-center mt-4">
                     <Title className="text-4xl font-bold">DartScorer</Title>
-                    <Subtitle>Add Players and click on Play to begin</Subtitle>
                 </div>
 
                 <div className="mt-6">
@@ -69,20 +73,23 @@ function GameMenu({ onStartGame }) {
                     {gameModes.map((mode) => (
                         <Button
                             key={mode.id}
+                            variant={selectedMode === mode.id ? "primary" : "secondary"}
                             onClick={() => setSelectedMode(mode.id)}
-                            className={`w-32 ${selectedMode === mode.id ? "bg-orange-500 hover:bg-orange-600" : "bg-blue-500 hover:bg-blue-600"} text-white transition duration-200 rounded-lg`}
-                        >{mode.label}</Button>
+                            color={selectedMode === mode.id ? "orange" : "blue"}
+                            >{mode.label}</Button>
                     ))}
                 </div>
 
                 <div className="flex justify-around mt-4">
                     <Button
                         onClick={() => setDoubleOut(false)}
-                        className={`w-32 ${doubleOut === false ? "bg-orange-500 hover:bg-orange-600" : "bg-blue-500 hover:bg-blue-600"} text-white transition duration-200 rounded-lg`}
+                        variant={!doubleOut ? "primary" : "secondary"}
+                        color={!doubleOut ? "orange" : "blue"}
                     >Single Out</Button>
                     <Button
                         onClick={() => setDoubleOut(true)}
-                        className={`w-32 ${doubleOut === true ? "bg-orange-500 hover:bg-orange-600" : "bg-blue-500 hover:bg-blue-600"} text-white transition duration-200 rounded-lg`}
+                        variant={doubleOut ? "primary" : "secondary"}
+                        color={doubleOut ? "orange" : "blue"}
                     >Double Out</Button>
                 </div>
 
@@ -140,7 +147,7 @@ function GameMenu({ onStartGame }) {
                 <div className="flex justify-center mt-6">
                     <Button
                         disabled={playerNames.length === 0}
-                        className={`w-32 ${playerNames.length === 0 ? "bg-gray-400" : "bg-green-500 hover:bg-green-600"} text-white transition duration-200 rounded-lg`}
+                        color={playerNames.length === 0 ? "gray" : "blue"}
                         onClick={() => onStartGame(playerNames, gameModes[selectedMode])}
                     >
                         Play

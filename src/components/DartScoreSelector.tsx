@@ -1,18 +1,27 @@
 import React, {useEffect, useState} from "react";
 import { Card, Title, Button, Subtitle } from "@tremor/react";
+import GameMode from "../interfaces/GameMode";
+import {ForwardIcon, PlayCircleIcon} from "@heroicons/react/16/solid";
 
-function DartScoreSelector({playerNames, onEndGame, gameMode}) {
+interface DartScoreSelectorProps {
+    playerNames: string[];
+    onEndGame: () => {};
+    gameMode: GameMode
+}
+
+function DartScoreSelector({playerNames, onEndGame, gameMode} : DartScoreSelectorProps) {
     const [startedGame, setStartedGame] = useState(false); // State for Double
-    const [legs, setLegs] = useState([]);
-    const [scoresToZero, setScoresToZero] = useState([]);
-    const [averages, setAverages] = useState([]);
-    const [averagesCount, setAveragesCount] = useState([]);
-    const [scores, setScores] = useState([]);
-    const [currentStartingScore, setCurrentStartingScore] = useState(301);
+    const [legs, setLegs] = useState<number[]>([]);
+    const [sets, setSets] = useState<number[]>([]);
+    const [scoresToZero, setScoresToZero] = useState<string[]>([]);
+    const [averages, setAverages] = useState<number[]>([]);
+    const [averagesCount, setAveragesCount] = useState<number[]>([]);
+    const [scores, setScores] = useState<number[]>([]);
+    const [currentStartingScore, setCurrentStartingScore] = useState<number>(301);
     const [isDouble, setIsDouble] = useState(false); // State for Double
     const [isTriple, setIsTriple] = useState(false); // State for Triple
     const [currentScoreIndex, setCurrentScoreIndex] = useState(0);
-    const [dartsThrown, setDartsThrown] = useState([]);
+    const [dartsThrown, setDartsThrown] = useState<number[]>([]);
 
     const dartScores = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]; // Dart score values
 
@@ -22,10 +31,11 @@ function DartScoreSelector({playerNames, onEndGame, gameMode}) {
         setScores(Array(playerNames.length).fill(gameMode.count))
         setAverages(Array(playerNames.length).fill(0))
         setLegs(Array(playerNames.length).fill(0))
+        setSets(Array(playerNames.length).fill(0))
         setAveragesCount(Array(playerNames.length).fill(0))
         setStartedGame(true)
     }, [playerNames.length, startedGame, gameMode]);
-    const handleDartSelection = (dartScore) => {
+    const handleDartSelection = (dartScore: number) => {
         if (dartsThrown.length === 3) return
         if (scores[currentScoreIndex] <= 0) return
         let finalScore = dartScore;
@@ -119,6 +129,14 @@ function DartScoreSelector({playerNames, onEndGame, gameMode}) {
             setLegs((prevLegs) => {
                 const newLegs = [...prevLegs];
                 newLegs[winnerIndex] += 1;
+                if (newLegs[winnerIndex] === 3) {
+                    setSets((prevSets) => {
+                        const newSets = [...prevSets];
+                        newSets[winnerIndex] += 1;
+                        return newSets;
+                    });
+                    newLegs[winnerIndex] = 0;
+                }
                 return newLegs;
             });
         }
@@ -146,8 +164,8 @@ function DartScoreSelector({playerNames, onEndGame, gameMode}) {
         ];
 
         const allPossibleScoresAsString  = [
-            ...dartScores,                       // Single scores
-            "SINGLE BULL",
+            ...dartScores.map(score => "" + score),                       // Single scores
+            "S-BULL",
             "BULL",
             ...dartScores.map(score => "D" + score), // Double scores
             ...dartScores.map(score => "T" + score),  // Triple scores
@@ -199,6 +217,9 @@ function DartScoreSelector({playerNames, onEndGame, gameMode}) {
                                 ⊘: {parseFloat(averages[index].toFixed(1))}
                             </Subtitle>
                             <Subtitle>
+                                S: {sets[index]}
+                            </Subtitle>
+                            <Subtitle>
                                 L: {legs[index]}
                             </Subtitle>
                         </div>
@@ -242,9 +263,7 @@ function DartScoreSelector({playerNames, onEndGame, gameMode}) {
                 )}
 
                 <div className="flex items-center m-6">
-                    <Subtitle>
-                        Played Darts:
-                    </Subtitle>
+                    <PlayCircleIcon className="h-8 w-8 text-gray-500" />
                     {dartsThrown.map((score, idx) => (
                         <Title key={idx} className='text-center text-2xl text-gray-800 mb ml-2'>
                             {score}
@@ -253,9 +272,7 @@ function DartScoreSelector({playerNames, onEndGame, gameMode}) {
                 </div>
 
                 <div className="flex items-center m-6">
-                    <Subtitle>
-                        Possible Options to end game:
-                    </Subtitle>
+                    <ForwardIcon className="h-8 w-8 text-gray-500" />
                     {scoresToZero.map((score, idx) => (
                         <Title key={idx} className='text-center text-2xl text-gray-800 mb ml-2'>
                             {score}
@@ -269,7 +286,7 @@ function DartScoreSelector({playerNames, onEndGame, gameMode}) {
                         <Button
                             key={dart}
                             onClick={() => handleDartSelection(dart)}
-                            className="w-full bg-blue-500 text-white hover:bg-blue-600 transition duration-200 rounded-lg"
+                            color={"blue"}
                         >
                             {dart}
                         </Button>
@@ -280,31 +297,31 @@ function DartScoreSelector({playerNames, onEndGame, gameMode}) {
                 <div className="grid grid-cols-5 gap-4 mb-6">
                     <Button
                         onClick={toggleDouble}
-                        className={`w-full ${isDouble ? 'bg-green-500 hover:bg-green-600 ' : 'bg-blue-500 hover:bg-blue-600 '} text-white transition duration-200 rounded-lg`}
+                        color={isDouble ? "orange" : "blue"}
                     >
                         Double
                     </Button>
                     <Button
                         onClick={toggleTriple}
-                        className={`w-full ${isTriple ? 'bg-yellow-500 hover:bg-yellow-600' : 'bg-blue-500 hover:bg-blue-600'} text-white  transition duration-200 rounded-lg`}
+                        color={isTriple ? "orange" : "blue"}
                     >
                         Triple
                     </Button>
                     <Button
                         onClick={() => handleDartSelection(25)}
-                        className="w-full bg-blue-500 text-white hover:bg-blue-600 transition duration-200 rounded-lg"
+                        color={"blue"}
                     >
                         25
                     </Button>
                     <Button
                         onClick={() => handleDartSelection(50)}
-                        className="w-full bg-blue-500 text-white hover:bg-blue-600 transition duration-200 rounded-lg"
+                        color={"blue"}
                     >
                         50
                     </Button>
                     <Button
                         onClick={() => handleDartSelection(0)}
-                        className="w-full bg-blue-500 text-white hover:bg-blue-600 transition duration-200 rounded-lg"
+                        color={"blue"}
                     >
                         0
                     </Button>
@@ -312,27 +329,27 @@ function DartScoreSelector({playerNames, onEndGame, gameMode}) {
 
                 <div className="grid grid-cols-4 gap-4 mb-6">
                     <Button
-                        className="w-full bg-red-500 text-white hover:bg-red-600 transition duration-200 rounded-lg"
                         onClick={onEndGame}
+                        color={"red"}
                     >
                         End
                     </Button>
                     <Button
-                        className="w-full bg-red-500 text-white hover:bg-red-600 transition duration-200 rounded-lg"
                         onClick={revertThrow}
+                        color={"red"}
                     >
                         Revert
                     </Button>
                     <Button
-                        className="w-full bg-red-500 text-white hover:bg-red-600 transition duration-200 rounded-lg"
                         onClick={resetGame}
+                        color={"red"}
                     >
                         Reset
                     </Button>
 
                     <Button
-                        className="w-full bg-red-500 text-white hover:bg-red-600 transition duration-200 rounded-lg"
                         onClick={goToNextPlayer}
+                        color={"red"}
                     >
                         Next
                     </Button>
