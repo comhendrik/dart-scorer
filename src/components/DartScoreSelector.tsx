@@ -70,9 +70,19 @@ function DartScoreSelector({playerNames, onEndGame, gameMode} : DartScoreSelecto
                 newScores[currentScoreIndex] = currentStartingScore;
                 return newScores;
             });
-        }
-        if (dartsThrown.length !== 0) {
 
+            if (playerNames.length === 1) {
+                // set it here because otherwise you will get problem playing alone
+                setCurrentStartingScore(currentStartingScore);
+            } else {
+                setCurrentStartingScore(scores[(currentScoreIndex + 1) % scores.length]);
+            }
+
+        } else {
+            setCurrentStartingScore(scores[(currentScoreIndex + 1) % scores.length]);
+        }
+
+        if (dartsThrown.length !== 0) {
 
             setAverages((prevAverages) => {
                 const newAverages = [...prevAverages];
@@ -90,8 +100,9 @@ function DartScoreSelector({playerNames, onEndGame, gameMode} : DartScoreSelecto
                 return newAveragesCount;
             });
         }
+
         calculatePossibleScoresToZero(scores[(currentScoreIndex + 1) % scores.length])
-        setCurrentStartingScore(scores[(currentScoreIndex + 1) % scores.length]);
+
         setIsDouble(false);
         setIsTriple(false);
         setDartsThrown([]);
@@ -262,98 +273,104 @@ function DartScoreSelector({playerNames, onEndGame, gameMode} : DartScoreSelecto
                     </div>
                 )}
 
-                <div className="flex items-center m-6">
-                    <PlayCircleIcon className="h-8 w-8 text-gray-500" />
-                    {dartsThrown.map((score, idx) => (
-                        <Title key={idx} className='text-center text-2xl text-gray-800 mb ml-2'>
-                            {score}
-                        </Title>
-                    ))}
-                </div>
+                {(loserName === null && winnerName === null) &&(
+                    <div>
+                        <div className="flex items-center m-6">
+                            <PlayCircleIcon className="h-8 w-8 text-gray-500"/>
+                            {dartsThrown.map((score, idx) => (
+                                <Title key={idx} className='text-center text-2xl text-gray-800 mb ml-2'>
+                                    {score}
+                                </Title>
+                            ))}
+                        </div>
 
-                <div className="flex items-center m-6">
-                    <ForwardIcon className="h-8 w-8 text-gray-500" />
-                    {scoresToZero.map((score, idx) => (
-                        <Title key={idx} className='text-center text-2xl text-gray-800 mb ml-2'>
-                            {score}
-                        </Title>
-                    ))}
-                </div>
+                        <div className="flex items-center m-6">
+                            <ForwardIcon className="h-8 w-8 text-gray-500"/>
+                            {scoresToZero.map((score, idx) => (
+                                <Title key={idx} className='text-center text-2xl text-gray-800 mb ml-2'>
+                                    {score}
+                                </Title>
+                            ))}
+                        </div>
 
-                {/* Grid layout for selecting dart values */}
-                <div className="grid grid-cols-5 gap-4 mb-6">
-                    {dartScores.map((dart) => (
-                        <Button
-                            key={dart}
-                            onClick={() => handleDartSelection(dart)}
-                            color={"blue"}
-                        >
-                            {dart}
-                        </Button>
-                    ))}
-                </div>
+                        {/* Grid layout for selecting dart values */}
+                        <div className="grid grid-cols-5 gap-4 mb-6">
+                            {dartScores.map((dart) => (
+                                <Button
+                                    key={dart}
+                                    onClick={() => handleDartSelection(dart)}
+                                    color={"blue"}
+                                >
+                                    {dart}
+                                </Button>
+                            ))}
+                        </div>
 
-                {/* Grid layout for toggling Double and Triple */}
-                <div className="grid grid-cols-5 gap-4 mb-6">
-                    <Button
-                        onClick={toggleDouble}
-                        color={isDouble ? "orange" : "blue"}
-                    >
-                        Double
-                    </Button>
-                    <Button
-                        onClick={toggleTriple}
-                        color={isTriple ? "orange" : "blue"}
-                    >
-                        Triple
-                    </Button>
-                    <Button
-                        onClick={() => handleDartSelection(25)}
-                        color={"blue"}
-                    >
-                        25
-                    </Button>
-                    <Button
-                        onClick={() => handleDartSelection(50)}
-                        color={"blue"}
-                    >
-                        50
-                    </Button>
-                    <Button
-                        onClick={() => handleDartSelection(0)}
-                        color={"blue"}
-                    >
-                        0
-                    </Button>
-                </div>
+                        {/* Grid layout for toggling Double and Triple */}
+                        <div className="grid grid-cols-5 gap-4 mb-6">
+                            <Button
+                                onClick={toggleDouble}
+                                color={isDouble ? "orange" : "blue"}
+                            >
+                                Double
+                            </Button>
+                            <Button
+                                onClick={toggleTriple}
+                                color={isTriple ? "orange" : "blue"}
+                            >
+                                Triple
+                            </Button>
+                            <Button
+                                onClick={() => handleDartSelection(25)}
+                                color={"blue"}
+                            >
+                                25
+                            </Button>
+                            <Button
+                                onClick={() => handleDartSelection(50)}
+                                color={"blue"}
+                            >
+                                50
+                            </Button>
+                            <Button
+                                onClick={() => handleDartSelection(0)}
+                                color={"blue"}
+                            >
+                                0
+                            </Button>
+                        </div>
 
-                <div className="grid grid-cols-4 gap-4 mb-6">
-                    <Button
-                        onClick={onEndGame}
-                        color={"red"}
-                    >
-                        End
-                    </Button>
-                    <Button
-                        onClick={revertThrow}
-                        color={"red"}
-                    >
-                        Revert
-                    </Button>
-                    <Button
-                        onClick={resetGame}
-                        color={"red"}
-                    >
-                        Reset
-                    </Button>
+                        <div className="grid grid-cols-4 gap-4 mb-6">
+                            <Button
+                                onClick={onEndGame}
+                                color={"red"}
+                            >
+                                End
+                            </Button>
+                            <Button
+                                onClick={revertThrow}
+                                color={"red"}
+                            >
+                                Revert
+                            </Button>
+                            <Button
+                                onClick={resetGame}
+                                color={"red"}
+                            >
+                                Reset
+                            </Button>
 
-                    <Button
-                        onClick={goToNextPlayer}
-                        color={"red"}
-                    >
-                        Next
-                    </Button>
-                </div>
+                            <Button
+                                onClick={goToNextPlayer}
+                                color={"red"}
+                            >
+                                Next
+                            </Button>
+                        </div>
+                    </div>
+                )}
+
+
             </Card>
         </div>
     );
