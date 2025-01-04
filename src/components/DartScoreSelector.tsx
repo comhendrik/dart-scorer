@@ -32,14 +32,7 @@ function DartScoreSelector({playerNames, onEndGame, gameMode, chosenLegLength, c
 
     useEffect(() => {
         if(startedGame) return;
-        setScores(Array(playerNames.length).fill(gameMode.count))
-        setAverages(Array(playerNames.length).fill(0))
-        setLegs(Array(playerNames.length).fill(0))
-        setSets(Array(playerNames.length).fill(0))
-        setAveragesCount(Array(playerNames.length).fill(0))
-        setLegLength(chosenLegLength)
-        setSetLength(chosenSetLength)
-        setStartedGame(true)
+        startGame()
     }, [playerNames.length, startedGame, gameMode, legLength, setLength]);
     const handleDartSelection = (dartScore: number) => {
         if (dartsThrown.length === 3) return
@@ -168,6 +161,17 @@ function DartScoreSelector({playerNames, onEndGame, gameMode, chosenLegLength, c
         setScoresToZero([])
     }
 
+    const startGame = () => {
+        setScores(Array(playerNames.length).fill(gameMode.count))
+        setAverages(Array(playerNames.length).fill(0))
+        setLegs(Array(playerNames.length).fill(0))
+        setSets(Array(playerNames.length).fill(0))
+        setAveragesCount(Array(playerNames.length).fill(0))
+        setLegLength(chosenLegLength)
+        setSetLength(chosenSetLength)
+        setStartedGame(true)
+    }
+
     const calculatePossibleScoresToZero = (currentScore: number) => {
         setScoresToZero([]);
 
@@ -259,7 +263,7 @@ function DartScoreSelector({playerNames, onEndGame, gameMode, chosenLegLength, c
                                 variant={"secondary"}
                                 className="bg-blue-500 text-white hover:bg-blue-600 transition duration-200 mt-4 rounded-lg p-2"
                             >
-                                Reset Game
+                                Next Leg
                             </Button>
                         </Card>
                     </div>
@@ -291,17 +295,17 @@ function DartScoreSelector({playerNames, onEndGame, gameMode, chosenLegLength, c
                                 {gameWinnerName} has won the whole game congratulations!
                             </Title>
                             <Button
-                                onClick={resetGame}
+                                onClick={startGame}
                                 variant={"secondary"}
                                 className="bg-blue-500 text-white hover:bg-blue-600 transition duration-200 mt-4 rounded-lg p-2"
                             >
-                                Reset Game
+                                Restart Game
                             </Button>
                         </Card>
                     </div>
                 )}
 
-                {(loserName === null && winnerName === null) &&(
+                {(loserName === null && winnerName === null && gameWinnerName === null) &&(
                     <div>
                         <div className="flex items-center m-6">
                             <PlayCircleIcon className="h-8 w-8 text-gray-500"/>
