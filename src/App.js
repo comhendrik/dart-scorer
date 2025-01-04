@@ -6,12 +6,16 @@ import AroundTheClock from "./components/AroundTheClock";
 function App() {
   const [showMenu, setShowMenu] = useState(true);
   const [playerNames, setPlayerNames] = useState(['']);
+  const [legLength, setLegLength] = useState(0);
+  const [setLength, setSetLength] = useState(0);
   const [gameMode, setGameMode] = useState({})
 
-   const onStartGame = (playerNames, gameMode) => {
+   const onStartGame = (playerNames, gameMode, legLength, setLength) => {
        setPlayerNames(playerNames)
        setGameMode(gameMode)
        setShowMenu(false)
+       setLegLength(legLength)
+       setSetLength(setLength)
    }
 
    const onEndGame = () => {
@@ -27,7 +31,7 @@ function App() {
   );
 
   return (
-      <DartScoreSelector playerNames={playerNames} onEndGame={onEndGame} gameMode={gameMode}/>
+      <DartScoreSelector playerNames={playerNames} onEndGame={onEndGame} gameMode={gameMode} chosenLegLength={legLength} chosenSetLength={setLength}/>
   );
 
 

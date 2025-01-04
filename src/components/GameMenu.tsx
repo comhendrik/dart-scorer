@@ -5,7 +5,7 @@ import { XCircleIcon, PlusIcon } from "@heroicons/react/24/solid";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/16/solid";
 import GameMode from "../interfaces/GameMode";
 interface GameMenuProps {
-    onStartGame: (playerNames: string[], gameMode: {}) => {};
+    onStartGame: (playerNames: string[], gameMode: {}, legLength: number, setLength: number) => {};
 }
 
 function GameMenu({ onStartGame } : GameMenuProps) {
@@ -148,7 +148,7 @@ function GameMenu({ onStartGame } : GameMenuProps) {
                     <Button
                         disabled={playerNames.length === 0}
                         color={playerNames.length === 0 ? "gray" : "blue"}
-                        onClick={() => onStartGame(playerNames, gameModes[selectedMode])}
+                        onClick={() => onStartGame(playerNames, gameModes[selectedMode], legs, sets)}
                     >
                         Play
                     </Button>

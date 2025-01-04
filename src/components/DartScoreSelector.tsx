@@ -6,13 +6,17 @@ import {ForwardIcon, PlayCircleIcon} from "@heroicons/react/16/solid";
 interface DartScoreSelectorProps {
     playerNames: string[];
     onEndGame: () => {};
-    gameMode: GameMode
+    gameMode: GameMode;
+    chosenLegLength: number;
+    chosenSetLength: number;
 }
 
-function DartScoreSelector({playerNames, onEndGame, gameMode} : DartScoreSelectorProps) {
+function DartScoreSelector({playerNames, onEndGame, gameMode, chosenLegLength, chosenSetLength} : DartScoreSelectorProps) {
     const [startedGame, setStartedGame] = useState(false); // State for Double
     const [legs, setLegs] = useState<number[]>([]);
     const [sets, setSets] = useState<number[]>([]);
+    const [legLength, setLegLength] = useState<number>(-1);
+    const [setLength, setSetLength] = useState<number>(-1);
     const [scoresToZero, setScoresToZero] = useState<string[]>([]);
     const [averages, setAverages] = useState<number[]>([]);
     const [averagesCount, setAveragesCount] = useState<number[]>([]);
@@ -33,8 +37,10 @@ function DartScoreSelector({playerNames, onEndGame, gameMode} : DartScoreSelecto
         setLegs(Array(playerNames.length).fill(0))
         setSets(Array(playerNames.length).fill(0))
         setAveragesCount(Array(playerNames.length).fill(0))
+        setLegLength(chosenLegLength)
+        setSetLength(chosenSetLength)
         setStartedGame(true)
-    }, [playerNames.length, startedGame, gameMode]);
+    }, [playerNames.length, startedGame, gameMode, legLength, setLength]);
     const handleDartSelection = (dartScore: number) => {
         if (dartsThrown.length === 3) return
         if (scores[currentScoreIndex] <= 0) return
@@ -140,7 +146,7 @@ function DartScoreSelector({playerNames, onEndGame, gameMode} : DartScoreSelecto
             setLegs((prevLegs) => {
                 const newLegs = [...prevLegs];
                 newLegs[winnerIndex] += 1;
-                if (newLegs[winnerIndex] === 3) {
+                if (newLegs[winnerIndex] === legLength) {
                     setSets((prevSets) => {
                         const newSets = [...prevSets];
                         newSets[winnerIndex] += 1;
@@ -211,6 +217,9 @@ function DartScoreSelector({playerNames, onEndGame, gameMode} : DartScoreSelecto
     const loserIndex = scores.findIndex(score => score < 0);
     const loserName = loserIndex !== -1 ? playerNames[loserIndex] : null;
 
+    const gameWinnerIndex = sets.findIndex(set => set === setLength);
+    const gameWinnerName = gameWinnerIndex !== -1 ? playerNames[gameWinnerIndex] : null;
+
     return (
         <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-500 to-indigo-500">
             <Card className="max-w-lg w-full p-6 shadow-lg bg-white rounded-lg">
@@ -268,6 +277,25 @@ function DartScoreSelector({playerNames, onEndGame, gameMode} : DartScoreSelecto
                                 className="bg-blue-500 text-white hover:bg-blue-600 transition duration-200 mt-4 rounded-lg p-2"
                             >
                                 Continue
+                            </Button>
+                        </Card>
+                    </div>
+                )}
+
+                {/* Show alert when player wins */}
+                {gameWinnerName && (
+                    <div className="my-6">
+                        <Card
+                            className="flex flex-col items-center bg-green-100 border-green-400 border-2 p-4 rounded-lg">
+                            <Title className="text-center text-xl text-green-600">
+                                {gameWinnerName} has won the whole game congratulations!
+                            </Title>
+                            <Button
+                                onClick={resetGame}
+                                variant={"secondary"}
+                                className="bg-blue-500 text-white hover:bg-blue-600 transition duration-200 mt-4 rounded-lg p-2"
+                            >
+                                Reset Game
                             </Button>
                         </Card>
                     </div>
