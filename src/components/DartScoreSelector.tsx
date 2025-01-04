@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import { Card, Title, Button, Subtitle } from "@tremor/react";
 import GameMode from "../interfaces/GameMode";
 import {ForwardIcon, PlayCircleIcon} from "@heroicons/react/16/solid";
@@ -9,9 +9,10 @@ interface DartScoreSelectorProps {
     gameMode: GameMode;
     chosenLegLength: number;
     chosenSetLength: number;
+    chosenIsDoubleOut: boolean
 }
 
-function DartScoreSelector({playerNames, onEndGame, gameMode, chosenLegLength, chosenSetLength} : DartScoreSelectorProps) {
+function DartScoreSelector({playerNames, onEndGame, gameMode, chosenLegLength, chosenSetLength, chosenIsDoubleOut} : DartScoreSelectorProps) {
     const [startedGame, setStartedGame] = useState(false); // State for Double
     const [legs, setLegs] = useState<number[]>([]);
     const [sets, setSets] = useState<number[]>([]);
@@ -26,18 +27,48 @@ function DartScoreSelector({playerNames, onEndGame, gameMode, chosenLegLength, c
     const [isTriple, setIsTriple] = useState(false); // State for Triple
     const [currentScoreIndex, setCurrentScoreIndex] = useState(0);
     const [dartsThrown, setDartsThrown] = useState<number[]>([]);
+    const [isDoubleOut, setIsDoubleOut] = useState<boolean>(true);
+
+
+    const [isLoss, setIsLoss] = useState<boolean>(false);
+    const [isWon, setIsWon] = useState<boolean>(false);
+    const [isWinningGame, setIsWinningGame] = useState<boolean>(false);
 
     const dartScores = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]; // Dart score values
 
 
+    const startGame = useCallback(() => {
+        setIsDoubleOut(chosenIsDoubleOut)
+        setScores(Array(playerNames.length).fill(gameMode.count))
+        setAverages(Array(playerNames.length).fill(0))
+        setLegs(Array(playerNames.length).fill(0))
+        setSets(Array(playerNames.length).fill(0))
+        setAveragesCount(Array(playerNames.length).fill(0))
+        setLegLength(chosenLegLength)
+        setSetLength(chosenSetLength)
+        setStartedGame(true)
+        setDartsThrown([])
+        setIsLoss(false)
+        setIsWon(false)
+        setIsWinningGame(false)
+
+    }, [chosenIsDoubleOut, playerNames, gameMode, chosenSetLength, chosenLegLength])
+
     useEffect(() => {
         if(startedGame) return;
         startGame()
-    }, [playerNames.length, startedGame, gameMode, legLength, setLength]);
+    }, [startGame, startedGame]);
+
+
+
     const handleDartSelection = (dartScore: number) => {
         if (dartsThrown.length === 3) return
         if (scores[currentScoreIndex] <= 0) return
+        if (isDoubleOut && scores[currentScoreIndex] <= 1) return
+
+
         let finalScore = dartScore;
+        let currentScore = scores[currentScoreIndex]
 
         // Apply Double or Triple multiplier based on state
         if(!(dartScore === 50 || dartScore === 25)) {
@@ -46,6 +77,16 @@ function DartScoreSelector({playerNames, onEndGame, gameMode, chosenLegLength, c
             } else if (isTriple) {
                 finalScore = dartScore * 3;
             }
+        }
+
+
+
+        let newScore = currentScore - finalScore;
+        if(newScore < 0 || (newScore === 1 && isDoubleOut)) {
+            setIsLoss(true)
+        } else if (newScore === 0) {
+            if(isDoubleOut && !isDouble) setIsLoss(true)
+            else setIsWon(true)
         }
 
 
@@ -63,7 +104,7 @@ function DartScoreSelector({playerNames, onEndGame, gameMode, chosenLegLength, c
     };
 
     const goToNextPlayer = () => {
-        if (scores[currentScoreIndex] < 0) {
+        if (isLoss) {
             setScores((prevScores) => {
                 const newScores = [...prevScores];
                 newScores[currentScoreIndex] = currentStartingScore;
@@ -76,7 +117,7 @@ function DartScoreSelector({playerNames, onEndGame, gameMode, chosenLegLength, c
             } else {
                 setCurrentStartingScore(scores[(currentScoreIndex + 1) % scores.length]);
             }
-
+            setIsLoss(false)
         } else {
             setCurrentStartingScore(scores[(currentScoreIndex + 1) % scores.length]);
         }
@@ -135,17 +176,17 @@ function DartScoreSelector({playerNames, onEndGame, gameMode, chosenLegLength, c
 
     const resetGame = () => {
 
-        if (winnerIndex !== -1) {
+        if (isWon) {
             setLegs((prevLegs) => {
                 const newLegs = [...prevLegs];
-                newLegs[winnerIndex] += 1;
-                if (newLegs[winnerIndex] === legLength) {
+                newLegs[currentScoreIndex] += 1;
+                if (newLegs[currentScoreIndex] === legLength) {
                     setSets((prevSets) => {
                         const newSets = [...prevSets];
-                        newSets[winnerIndex] += 1;
+                        newSets[currentScoreIndex] += 1;
                         return newSets;
                     });
-                    newLegs[winnerIndex] = 0;
+                    newLegs[currentScoreIndex] = 0;
                 }
                 return newLegs;
             });
@@ -157,19 +198,35 @@ function DartScoreSelector({playerNames, onEndGame, gameMode, chosenLegLength, c
         setIsDouble(false); // State for Double
         setIsTriple(false); // State for Triple
         setCurrentScoreIndex(0);
-        setDartsThrown([]);
+        setDartsThrown([])
         setScoresToZero([])
     }
 
-    const startGame = () => {
+    const goToNextLeg = () => {
+        setLegs((prevLegs) => {
+            const newLegs = [...prevLegs];
+            newLegs[currentScoreIndex] += 1;
+            if (newLegs[currentScoreIndex] === legLength) {
+                setSets((prevSets) => {
+                    const newSets = [...prevSets];
+                    newSets[currentScoreIndex] += 1;
+                    if (newSets[currentScoreIndex] === setLength) {
+                        setIsWinningGame(true);
+                    }
+                    return newSets;
+                });
+                newLegs[currentScoreIndex] = 0;
+            }
+            return newLegs;
+        });
+
+
+        setIsWon(false);
+
         setScores(Array(playerNames.length).fill(gameMode.count))
         setAverages(Array(playerNames.length).fill(0))
-        setLegs(Array(playerNames.length).fill(0))
-        setSets(Array(playerNames.length).fill(0))
         setAveragesCount(Array(playerNames.length).fill(0))
-        setLegLength(chosenLegLength)
-        setSetLength(chosenSetLength)
-        setStartedGame(true)
+        setDartsThrown([])
     }
 
     const calculatePossibleScoresToZero = (currentScore: number) => {
@@ -215,15 +272,6 @@ function DartScoreSelector({playerNames, onEndGame, gameMode, chosenLegLength, c
 
     }
 
-    const winnerIndex = scores.findIndex(score => score === 0);
-    const winnerName = winnerIndex !== -1 ? playerNames[winnerIndex] : null;
-
-    const loserIndex = scores.findIndex(score => score < 0);
-    const loserName = loserIndex !== -1 ? playerNames[loserIndex] : null;
-
-    const gameWinnerIndex = sets.findIndex(set => set === setLength);
-    const gameWinnerName = gameWinnerIndex !== -1 ? playerNames[gameWinnerIndex] : null;
-
     return (
         <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-500 to-indigo-500">
             <Card className="max-w-lg w-full p-6 shadow-lg bg-white rounded-lg">
@@ -250,18 +298,37 @@ function DartScoreSelector({playerNames, onEndGame, gameMode, chosenLegLength, c
                     ))}
                 </div>
 
+                <div className="flex items-center m-6">
+                    <PlayCircleIcon className="h-8 w-8 text-gray-500"/>
+                    {dartsThrown.map((score, idx) => (
+                        <Title key={idx} className='text-center text-2xl text-gray-800 mb ml-2'>
+                            {score}
+                        </Title>
+                    ))}
+                </div>
+
+                <div className="flex items-center m-6">
+                    <ForwardIcon className="h-8 w-8 text-gray-500"/>
+                    {scoresToZero.map((score, idx) => (
+                        <Title key={idx} className='text-center text-2xl text-gray-800 mb ml-2'>
+                            {score}
+                        </Title>
+                    ))}
+                </div>
+
                 {/* Show alert when player wins */}
-                {winnerName && (
+                {isWon && (
                     <div className="my-6">
                         <Card
                             className="flex flex-col items-center bg-green-100 border-green-400 border-2 p-4 rounded-lg">
                             <Title className="text-center text-xl text-green-600">
-                                {winnerName} has won!
+                                Leg is won, Congratulations!
                             </Title>
                             <Button
-                                onClick={resetGame}
-                                variant={"secondary"}
-                                className="bg-blue-500 text-white hover:bg-blue-600 transition duration-200 mt-4 rounded-lg p-2"
+                                onClick={goToNextLeg}
+                                variant={"primary"}
+                                color={"green"}
+                                className={"m-2"}
                             >
                                 Next Leg
                             </Button>
@@ -269,16 +336,17 @@ function DartScoreSelector({playerNames, onEndGame, gameMode, chosenLegLength, c
                     </div>
                 )}
 
-                {loserName && (
+                {isLoss && (
                     <div className="my-6">
                         <Card className="flex flex-col items-center bg-red-100 border-red-400 border-2 p-4 rounded-lg">
                             <Title className="text-center text-xl text-red-600">
-                                {loserName} has thrown too much!
+                                Not the right dart
                             </Title>
                             <Button
                                 onClick={goToNextPlayer}
-                                variant={"secondary"}
-                                className="bg-blue-500 text-white hover:bg-blue-600 transition duration-200 mt-4 rounded-lg p-2"
+                                variant={"primary"}
+                                color={"red"}
+                                className={"m-2"}
                             >
                                 Continue
                             </Button>
@@ -287,44 +355,27 @@ function DartScoreSelector({playerNames, onEndGame, gameMode, chosenLegLength, c
                 )}
 
                 {/* Show alert when player wins */}
-                {gameWinnerName && (
+                {isWinningGame && (
                     <div className="my-6">
                         <Card
                             className="flex flex-col items-center bg-green-100 border-green-400 border-2 p-4 rounded-lg">
                             <Title className="text-center text-xl text-green-600">
-                                {gameWinnerName} has won the whole game congratulations!
+                                Player has won the whole Game!
                             </Title>
                             <Button
                                 onClick={startGame}
-                                variant={"secondary"}
-                                className="bg-blue-500 text-white hover:bg-blue-600 transition duration-200 mt-4 rounded-lg p-2"
+                                variant={"primary"}
+                                color={"green"}
+                                className={"m-2"}
                             >
-                                Restart Game
+                                Start New Game
                             </Button>
                         </Card>
                     </div>
                 )}
 
-                {(loserName === null && winnerName === null && gameWinnerName === null) &&(
+                {(!isLoss && !isWon && !isWinningGame) && (
                     <div>
-                        <div className="flex items-center m-6">
-                            <PlayCircleIcon className="h-8 w-8 text-gray-500"/>
-                            {dartsThrown.map((score, idx) => (
-                                <Title key={idx} className='text-center text-2xl text-gray-800 mb ml-2'>
-                                    {score}
-                                </Title>
-                            ))}
-                        </div>
-
-                        <div className="flex items-center m-6">
-                            <ForwardIcon className="h-8 w-8 text-gray-500"/>
-                            {scoresToZero.map((score, idx) => (
-                                <Title key={idx} className='text-center text-2xl text-gray-800 mb ml-2'>
-                                    {score}
-                                </Title>
-                            ))}
-                        </div>
-
                         {/* Grid layout for selecting dart values */}
                         <div className="grid grid-cols-5 gap-4 mb-6">
                             {dartScores.map((dart) => (

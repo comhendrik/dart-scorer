@@ -1,11 +1,11 @@
 'use client';
 import React, { useState } from 'react';
-import { Button, Card, Subtitle, TextInput, Title } from '@tremor/react';
+import { Button, Card, TextInput, Title } from '@tremor/react';
 import { XCircleIcon, PlusIcon } from "@heroicons/react/24/solid";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/16/solid";
 import GameMode from "../interfaces/GameMode";
 interface GameMenuProps {
-    onStartGame: (playerNames: string[], gameMode: {}, legLength: number, setLength: number) => {};
+    onStartGame: (playerNames: string[], gameMode: {}, legLength: number, setLength: number, isDoubleOut: boolean) => {};
 }
 
 function GameMenu({ onStartGame } : GameMenuProps) {
@@ -148,7 +148,7 @@ function GameMenu({ onStartGame } : GameMenuProps) {
                     <Button
                         disabled={playerNames.length === 0}
                         color={playerNames.length === 0 ? "gray" : "blue"}
-                        onClick={() => onStartGame(playerNames, gameModes[selectedMode], legs, sets)}
+                        onClick={() => onStartGame(playerNames, gameModes[selectedMode], legs, sets, doubleOut)}
                     >
                         Play
                     </Button>

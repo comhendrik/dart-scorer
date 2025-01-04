@@ -8,6 +8,7 @@ function App() {
   const [playerNames, setPlayerNames] = useState(['']);
   const [legLength, setLegLength] = useState(0);
   const [setLength, setSetLength] = useState(0);
+  const [isDoubleOut, setIsDoubleOut] = useState(false);
   const [gameMode, setGameMode] = useState({})
 
    const onStartGame = (playerNames, gameMode, legLength, setLength) => {
@@ -23,6 +24,7 @@ function App() {
         setShowMenu(false)
         setLegLength(legLength)
         setSetLength(setLength)
+       setIsDoubleOut(isDoubleOut)
    }
 
    const onEndGame = () => {
