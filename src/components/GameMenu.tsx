@@ -75,7 +75,7 @@ function GameMenu({ onStartGame } : GameMenuProps) {
                             key={mode.id}
                             variant={selectedMode === mode.id ? "primary" : "secondary"}
                             onClick={() => setSelectedMode(mode.id)}
-                            color={selectedMode === mode.id ? "orange" : "blue"}
+                            color={"blue"}
                             >{mode.label}</Button>
                     ))}
                 </div>
@@ -84,12 +84,12 @@ function GameMenu({ onStartGame } : GameMenuProps) {
                     <Button
                         onClick={() => setDoubleOut(false)}
                         variant={!doubleOut ? "primary" : "secondary"}
-                        color={!doubleOut ? "orange" : "blue"}
+                        color={"blue"}
                     >Single Out</Button>
                     <Button
                         onClick={() => setDoubleOut(true)}
                         variant={doubleOut ? "primary" : "secondary"}
-                        color={doubleOut ? "orange" : "blue"}
+                        color={"blue"}
                     >Double Out</Button>
                 </div>
 

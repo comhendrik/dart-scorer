@@ -11,11 +11,18 @@ function App() {
   const [gameMode, setGameMode] = useState({})
 
    const onStartGame = (playerNames, gameMode, legLength, setLength) => {
-       setPlayerNames(playerNames)
-       setGameMode(gameMode)
-       setShowMenu(false)
-       setLegLength(legLength)
-       setSetLength(setLength)
+
+        for (const name of playerNames) {
+            if(name === undefined || name === null || name === '') {
+               alert("Specify a name for every player")
+                return
+            }
+        }
+        setPlayerNames(playerNames)
+        setGameMode(gameMode)
+        setShowMenu(false)
+        setLegLength(legLength)
+        setSetLength(setLength)
    }
 
    const onEndGame = () => {
