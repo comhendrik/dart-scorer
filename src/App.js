@@ -11,7 +11,7 @@ function App() {
   const [isDoubleOut, setIsDoubleOut] = useState(false);
   const [gameMode, setGameMode] = useState({})
 
-   const onStartGame = (playerNames, gameMode, legLength, setLength) => {
+   const onStartGame = (playerNames, gameMode, legLength, setLength, isDoubleOut) => {
 
         for (const name of playerNames) {
             if(name === undefined || name === null || name === '') {
@@ -24,7 +24,7 @@ function App() {
         setShowMenu(false)
         setLegLength(legLength)
         setSetLength(setLength)
-       setIsDoubleOut(isDoubleOut)
+        setIsDoubleOut(isDoubleOut)
    }
 
    const onEndGame = () => {
@@ -40,7 +40,7 @@ function App() {
   );
 
   return (
-      <DartScoreSelector playerNames={playerNames} onEndGame={onEndGame} gameMode={gameMode} chosenLegLength={legLength} chosenSetLength={setLength}/>
+      <DartScoreSelector playerNames={playerNames} onEndGame={onEndGame} gameMode={gameMode} chosenLegLength={legLength} chosenSetLength={setLength} chosenIsDoubleOut={isDoubleOut}/>
   );
 
 
