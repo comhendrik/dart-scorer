@@ -46,7 +46,7 @@ For a target score of 170, suggested throws might include:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/dart-scorer.git
+   git clone https://github.com/comhendrik/dart-scorer.git
    ```  
 2. Navigate to the project directory:
    ```bash
