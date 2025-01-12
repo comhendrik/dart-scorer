@@ -63,7 +63,7 @@ For a target score of 170, suggested throws might include:
 
 ---
 
-##  ^=^s  Docker Installation
+## 🚢  Docker Installation
 
 1. Clone the repository:
    ```bash
