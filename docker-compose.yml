@@ -32,7 +32,7 @@ services:
       context: ./frontend
     container_name: frontend
     ports:
-      - "80:80" # Expose the backend port
+      - "80:80" # Expose the frontend port
     networks:
       - dart-scorer-network
 volumes:

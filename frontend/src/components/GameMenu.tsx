@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { Button, Card, TextInput, Title } from '@tremor/react';
+import {Button, Card, TextInput, Title} from '@tremor/react';
 import { XCircleIcon, PlusIcon } from "@heroicons/react/24/solid";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/16/solid";
 import GameMode from "../interfaces/GameMode";
@@ -76,7 +76,7 @@ function GameMenu({ onStartGame } : GameMenuProps) {
                             variant={selectedMode === mode.id ? "primary" : "secondary"}
                             onClick={() => setSelectedMode(mode.id)}
                             color={"blue"}
-                            >{mode.label}</Button>
+                        >{mode.label}</Button>
                     ))}
                 </div>
 
@@ -105,7 +105,7 @@ function GameMenu({ onStartGame } : GameMenuProps) {
                                 <Button
                                     variant="secondary"
                                     size="lg"
-                                    onClick={() => setSets(Math.max(1, sets-1))}
+                                    onClick={() => setSets(Math.max(1, sets - 1))}
                                 >
                                     <ChevronLeftIcon className="h-6 w-6"/>
                                 </Button>
@@ -127,7 +127,7 @@ function GameMenu({ onStartGame } : GameMenuProps) {
                                 <Button
                                     variant="secondary"
                                     size="lg"
-                                    onClick={() => setLegs(Math.max(1, legs-1))}
+                                    onClick={() => setLegs(Math.max(1, legs - 1))}
                                 >
                                     <ChevronLeftIcon className="h-6 w-6"/>
                                 </Button>
@@ -153,6 +153,7 @@ function GameMenu({ onStartGame } : GameMenuProps) {
                         Play
                     </Button>
                 </div>
+
 
 
             </Card>
