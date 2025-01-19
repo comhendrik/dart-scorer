@@ -30,6 +30,16 @@ app.get("/leaderboard", async (req, res) => {
     }
 });
 
+app.get("/games", async (req, res) => {
+    try {
+        const result = await pool.query("SELECT * FROM games WHERE user_id = $1", [req.query.user_id]);
+        res.json(result.rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error fetching data");
+    }
+});
+
 app.post("/items", async (req, res) => {
     const { name, description } = req.body;
     try {

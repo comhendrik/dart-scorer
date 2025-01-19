@@ -5,9 +5,33 @@ import {
     Text,
     LineChart, Tracker, CategoryBar
 } from "@tremor/react";
-import {LeaderboardEntry, leaderboardService} from "../service/LeaderBoardService";
+import {Game, gamesService} from "../service/GamesService";
 
 const Leaderboard = () => {
+    const [gameData, setGameData] = useState<{}[]>([]);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data = await gamesService.fetchGames(1);
+                const newGameData: {}[] = [];
+                data.map(game => {
+                    if (game.haswon) {
+                        newGameData.push({ color: 'emerald', tooltip: 'Win' });
+                    } else {
+                        newGameData.push({ color: 'rose', tooltip: 'Loss' });
+                    }
+                });
+                console.log(newGameData);
+                setGameData(newGameData);
+            } catch (err: any) {
+                setError(err.message);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     const valueFormatter = function (number: number) {
         return '' + number;
@@ -91,32 +115,12 @@ const Leaderboard = () => {
         },
     ];
 
-    const data = [
-        { color: 'emerald', tooltip: 'Win' },
-        { color: 'emerald', tooltip: 'Win' },
-        { color: 'emerald', tooltip: 'Win' },
-        { color: 'emerald', tooltip: 'Win' },
-        { color: 'emerald', tooltip: 'Win' },
-        { color: 'emerald', tooltip: 'Win' },
-        { color: 'emerald', tooltip: 'Win' },
-        { color: 'emerald', tooltip: 'Win' },
-        { color: 'emerald', tooltip: 'Win' },
-        { color: 'emerald', tooltip: 'Win' },
-        { color: 'rose', tooltip: 'Loss' },
-        { color: 'emerald', tooltip: 'Win' },
-        { color: 'emerald', tooltip: 'Win' },
-        { color: 'emerald', tooltip: 'Win' },
-        { color: 'rose', tooltip: 'Loss' },
-        { color: 'rose', tooltip: 'Loss' },
-        { color: 'rose', tooltip: 'Loss' },
-        ]
-
 
     return (
         <Card className="max-w-lg w-full p-6 shadow-lg bg-white rounded-lg m-5">
             <Title>User Data</Title>
             <Text className="mb-4">Statistics</Text>
-            <div className="mt-10">
+            <Card className="mx-auto max-w-md mt-5">
                 <h3 className="text-lg font-medium text-tremor-content-strong dark:text-dark-tremor-content-strong">Averages
                     over sets</h3>
                 <LineChart
@@ -128,9 +132,9 @@ const Leaderboard = () => {
                     colors={['indigo']}
                     valueFormatter={valueFormatter}
                 />
-            </div>
+            </Card>
 
-            <div className="mt-10">
+            <Card className="mx-auto max-w-md mt-5">
                 <h3 className="text-lg font-medium text-tremor-content-strong dark:text-dark-tremor-content-strong">Highest
                     Play on Turns</h3>
                 <LineChart
@@ -142,14 +146,14 @@ const Leaderboard = () => {
                     colors={['indigo']}
                     valueFormatter={valueFormatter}
                 />
-            </div>
+            </Card>
 
-            <Card className="mx-auto max-w-md mt-10">
+            <Card className="mx-auto max-w-md mt-5">
                 <p className="text-tremor-default flex items-center justify-between">
                     <span className="text-tremor-content-strong dark:text-dark-tremor-content-strong font-medium">Wins over last games</span>
                     <span className="text-tremor-content dark:text-dark-tremor-content">Winrate 99.1%</span>
                 </p>
-                <Tracker data={data} className="mt-2"/>
+                <Tracker data={gameData} className="mt-2"/>
             </Card>
             <Card className="mx-auto max-w-md mt-5">
                 <p className="text-tremor-default flex items-center justify-between">
