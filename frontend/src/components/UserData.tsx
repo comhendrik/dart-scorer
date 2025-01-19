@@ -113,10 +113,10 @@ const Leaderboard = () => {
 
 
     return (
-        <Card className="max-w-lg w-full p-6 shadow-lg bg-white rounded-lg">
+        <Card className="max-w-lg w-full p-6 shadow-lg bg-white rounded-lg m-5">
             <Title>User Data</Title>
             <Text className="mb-4">Statistics</Text>
-            <>
+            <div className="mt-10">
                 <h3 className="text-lg font-medium text-tremor-content-strong dark:text-dark-tremor-content-strong">Averages
                     over sets</h3>
                 <LineChart
@@ -128,9 +128,9 @@ const Leaderboard = () => {
                     colors={['indigo']}
                     valueFormatter={valueFormatter}
                 />
-            </>
+            </div>
 
-            <>
+            <div className="mt-10">
                 <h3 className="text-lg font-medium text-tremor-content-strong dark:text-dark-tremor-content-strong">Highest
                     Play on Turns</h3>
                 <LineChart
@@ -142,22 +142,22 @@ const Leaderboard = () => {
                     colors={['indigo']}
                     valueFormatter={valueFormatter}
                 />
-            </>
+            </div>
 
-            <Card className="mx-auto max-w-md">
+            <Card className="mx-auto max-w-md mt-10">
                 <p className="text-tremor-default flex items-center justify-between">
                     <span className="text-tremor-content-strong dark:text-dark-tremor-content-strong font-medium">Wins over last games</span>
                     <span className="text-tremor-content dark:text-dark-tremor-content">Winrate 99.1%</span>
                 </p>
                 <Tracker data={data} className="mt-2"/>
             </Card>
-            <Card className="mx-auto max-w-md">
+            <Card className="mx-auto max-w-md mt-5">
                 <p className="text-tremor-default flex items-center justify-between">
                     <span className="text-tremor-content-strong dark:text-dark-tremor-content-strong font-medium">All Time Average</span>
                 </p>
                 <CategoryBar
-                    values={[20, 20, 60, 80]}
-                    colors={['rose', 'orange', 'yellow', 'emerald']}
+                    values={[20, 20, 30, 30, 80]}
+                    colors={['rose', 'orange', 'yellow',  'emerald', 'green']}
                     markerValue={62}
                 />
             </Card>
