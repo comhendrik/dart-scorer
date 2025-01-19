@@ -21,30 +21,28 @@ const Leaderboard = () => {
         fetchData();
     }, []);
     return (
-        <div className="flex justify-center items-center h-screen bg-gray-100">
-            <Card className="w-full max-w-md">
-                <Title>Leaderboard</Title>
-                <Text className="mb-4">Top Performers</Text>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableHeaderCell>Rank</TableHeaderCell>
-                            <TableHeaderCell>Name</TableHeaderCell>
-                            <TableHeaderCell>Score</TableHeaderCell>
+        <Card className="max-w-lg w-full p-6 shadow-lg bg-white rounded-lg">
+            <Title>Leaderboard</Title>
+            <Text className="mb-4">Top Performers</Text>
+            <Table>
+                <TableHead>
+                    <TableRow>
+                        <TableHeaderCell>Rank</TableHeaderCell>
+                        <TableHeaderCell>Name</TableHeaderCell>
+                        <TableHeaderCell>Score</TableHeaderCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {leaderboard.map((entry) => (
+                        <TableRow key={entry.id}>
+                            <TableCell>{entry.id}</TableCell>
+                            <TableCell>{entry.name}</TableCell>
+                            <TableCell>{entry.score}</TableCell>
                         </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {leaderboard.map((entry) => (
-                            <TableRow key={entry.id}>
-                                <TableCell>{entry.id}</TableCell>
-                                <TableCell>{entry.name}</TableCell>
-                                <TableCell>{entry.score}</TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </Card>
-        </div>
+                    ))}
+                </TableBody>
+            </Table>
+        </Card>
     );
 };
 

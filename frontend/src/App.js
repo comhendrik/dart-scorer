@@ -32,22 +32,26 @@ function App() {
      setShowMenu(true)
    }
 
+   return (
+       <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-500 to-indigo-500">
+           <Leaderboard/>
+       </div>
+   );
 
-   return (<Leaderboard />);
+    if (showMenu) return (
+        <GameMenu onStartGame={onStartGame}/>
+    );
 
-  if (showMenu) return (
-      <GameMenu onStartGame={onStartGame} />
-  );
+    if (gameMode.id === 2) return (
+        <AroundTheClock onEndGame={onEndGame}/>
+    );
 
-  if (gameMode.id === 2) return (
-      <AroundTheClock onEndGame={onEndGame}/>
-  );
-
-  return (
-      <DartScoreSelector playerNames={playerNames} onEndGame={onEndGame} gameMode={gameMode} chosenLegLength={legLength} chosenSetLength={setLength} chosenIsDoubleOut={isDoubleOut}/>
-  );
-
+    return (
+        <DartScoreSelector playerNames={playerNames} onEndGame={onEndGame} gameMode={gameMode}
+                           chosenLegLength={legLength} chosenSetLength={setLength} chosenIsDoubleOut={isDoubleOut}/>
+    );
 
 }
 
 export default App;
+
