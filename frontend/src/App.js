@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import GameMenu from "./components/GameMenu";
 import DartScoreSelector from "./components/DartScoreSelector";
 import AroundTheClock from "./components/AroundTheClock";
+import Leaderboard from "./components/Leaderboard";
 
 function App() {
   const [showMenu, setShowMenu] = useState(true);
@@ -30,6 +31,9 @@ function App() {
    const onEndGame = () => {
      setShowMenu(true)
    }
+
+
+   return (<Leaderboard />);
 
   if (showMenu) return (
       <GameMenu onStartGame={onStartGame} />

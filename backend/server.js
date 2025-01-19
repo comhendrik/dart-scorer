@@ -20,9 +20,9 @@ const pool = new Pool({
 });
 
 // Routes
-app.get("/items", async (req, res) => {
+app.get("/leaderboard", async (req, res) => {
     try {
-        const result = await pool.query("SELECT * FROM items");
+        const result = await pool.query("SELECT * FROM leaderboard ORDER BY score DESC");
         res.json(result.rows);
     } catch (err) {
         console.error(err);
