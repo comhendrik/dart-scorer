@@ -5,12 +5,12 @@ export type Game = {
 };
 
 class GamesService {
-    private baseUrl: string;
     private maxRetries: number;
+    private baseUrl: string;
 
-    constructor(baseUrl: string, maxRetries: number = 3) {
-        this.baseUrl = baseUrl;
+    constructor(maxRetries: number = 3) {
         this.maxRetries = maxRetries;
+        this.baseUrl = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:3000";
     }
 
     /**
@@ -19,11 +19,9 @@ class GamesService {
      */
     async fetchGames(userId: number): Promise<Game[]> {
         let attempts = 0;
-
         while (attempts < this.maxRetries) {
             try {
                 const response = await fetch(`${this.baseUrl}/games?user_id=${userId}`);
-                console.log(response);
                 if (!response.ok) {
                     throw new Error(`HTTP Error: ${response.status}`);
                 }
@@ -44,4 +42,4 @@ class GamesService {
     }
 }
 
-export const gamesService = new GamesService("http://localhost:3000",3);
+export const gamesService = new GamesService();

@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 // PostgreSQL Connection Pool
 const pool = new Pool({
     user: "user", // Same as POSTGRES_USER in Docker
-    host: "localhost", // Host of PostgreSQL Docker container
+    host: process.env.DATABASE_HOST, // Host of PostgreSQL Docker container / name of docker container
     database: "mydatabase", // Same as POSTGRES_DB in Docker
     password: "password", // Same as POSTGRES_PASSWORD in Docker
     port: 5432, // Default PostgreSQL port
@@ -66,6 +66,6 @@ app.delete("/items/:id", async (req, res) => {
 });
 
 // Start the server
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
     console.log(`Server running on http://localhost:${port}`);
 });

@@ -13,17 +13,14 @@ RUN npm install
 # Copy the rest of the application files to the working directory
 COPY . .
 
+
+
+
+ENV REACT_APP_BACKEND_API_URL "http://localhost:3000"
+
+# Expose port 3000 to the host
+EXPOSE 3000
+
 # Build the React application for production
-RUN npm run build
-
-# Use the official Nginx image to serve the static files
-FROM nginx:stable-alpine
-
-# Copy the build output to the Nginx HTML directory
-COPY --from=build /app/build /usr/share/nginx/html
-
-# Expose port 80 to the host
-EXPOSE 80
-
-# Start Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Command to run the backend (adjust based on your backend)
+CMD ["npm", "start"]

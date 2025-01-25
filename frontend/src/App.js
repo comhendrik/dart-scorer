@@ -8,7 +8,7 @@ import UserData from "./components/UserData";
 
 function App() {
   const [showMenu, setShowMenu] = useState(true);
-  const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [showLeaderboard, setShowLeaderboard] = useState(true);
   const [playerNames, setPlayerNames] = useState(['']);
   const [legLength, setLegLength] = useState(0);
   const [setLength, setSetLength] = useState(0);

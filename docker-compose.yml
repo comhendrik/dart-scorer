@@ -1,4 +1,3 @@
-version: "3.9"
 services:
   postgres:
     image: postgres:latest
@@ -12,7 +11,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - dart-scorer-network
+      - backend-db
   backend:
     build:
       context: ./backend
@@ -24,20 +23,21 @@ services:
       DATABASE_PASSWORD: password
       DATABASE_NAME: mydatabase
     ports:
-      - "3000:3000" # Expose the backend port
+      - "3000:3000"
     networks:
-      - dart-scorer-network
+      - backend-db
+    depends_on:
+      - postgres
   frontend:
     build:
       context: ./frontend
     container_name: frontend
     ports:
-      - "80:80" # Expose the frontend port
-    networks:
-      - dart-scorer-network
+      - "8000:3000"
+    depends_on:
+      - backend
 volumes:
   postgres_data:
 
 networks:
-  dart-scorer-network:
-    driver: bridge
+  backend-db:

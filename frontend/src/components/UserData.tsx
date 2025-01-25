@@ -12,6 +12,7 @@ const Leaderboard = () => {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
+
         const fetchData = async () => {
             try {
                 const data = await gamesService.fetchGames(1);

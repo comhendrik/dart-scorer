@@ -8,8 +8,8 @@ class LeaderboardService {
     private baseUrl: string;
     private maxRetries: number;
 
-    constructor(baseUrl: string, maxRetries: number = 3) {
-        this.baseUrl = baseUrl;
+    constructor(maxRetries: number = 3) {
+        this.baseUrl = process.env.REACT_APP_BACKEND_API_URL || "http://localhost:3000";
         this.maxRetries = maxRetries;
     }
 
@@ -43,5 +43,5 @@ class LeaderboardService {
     }
 }
 
-export const leaderboardService = new LeaderboardService("http://localhost:3000",3);
+export const leaderboardService = new LeaderboardService();
 
