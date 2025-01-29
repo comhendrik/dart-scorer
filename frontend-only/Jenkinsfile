@@ -2,6 +2,7 @@ pipeline {
     agent any
 
     environment {
+        PATH = "/usr/local/bin:$PATH"
         REPO_URL = 'https://github.com/comhendrik/dart-scorer.git'
         APP_NAME = 'dart-scorer-frontend-only'
         DOCKER_IMAGE = "${APP_NAME}:latest"
