@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-        docker { image 'docker:19.03.12' }  // Use Docker image with Docker installed
-    }
+    agent any
 
     environment {
         REPO_URL = 'https://github.com/comhendrik/dart-scorer.git'
