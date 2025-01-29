@@ -14,8 +14,6 @@ RUN npm install
 COPY . .
 
 
-
-
 ENV REACT_APP_BACKEND_API_URL "http://localhost:3000"
 
 # Expose port 3000 to the host
