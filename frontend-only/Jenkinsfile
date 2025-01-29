@@ -32,7 +32,7 @@ pipeline {
                     sh """
                     docker run --rm -d -p 80:80 --name ${APP_NAME} ${DOCKER_IMAGE}
                     sleep 5
-                    curl -f http://localhost:8080 || exit 1
+                    curl -f http://localhost:80 || exit 1
                     """
                 }
             }
