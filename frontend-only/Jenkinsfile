@@ -30,7 +30,7 @@ pipeline {
             steps {
                 script {
                     sh """
-                    docker run --rm -d -p 8080:80 --name ${APP_NAME} ${DOCKER_IMAGE}
+                    docker run --rm -d -p 80:80 --name ${APP_NAME} ${DOCKER_IMAGE}
                     sleep 5
                     curl -f http://localhost:8080 || exit 1
                     """
