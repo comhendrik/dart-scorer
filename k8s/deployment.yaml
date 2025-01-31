@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dart-scorer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dart-scorer
+  template:
+    metadata:
+      labels:
+        app: dart-scorer
+    spec:
+      containers:
+        - name: dart-scorer
+          image: docker.io/comhendrik/dart-scorer-frontend-only:latest
+          ports:
+            - containerPort: 80

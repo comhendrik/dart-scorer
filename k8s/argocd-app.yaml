@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: dart-scorer
+  namespace: argocd  # Make sure Argo CD is installed in this namespace
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/comhendrik/dart-scorer  # Git repo with your manifests
+    targetRevision: main
+    path: k8s  # The path inside the repo where the YAML files are stored
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default  # Kubernetes namespace where you want to deploy the app
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
