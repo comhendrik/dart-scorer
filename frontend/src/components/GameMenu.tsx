@@ -40,7 +40,7 @@ function GameMenu({ onStartGame } : GameMenuProps) {
         <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-500 to-indigo-500">
             <Card className="max-w-lg w-full p-6 shadow-lg bg-white rounded-lg">
                 <div className="flex flex-col items-center justify-center mt-4">
-                    <Title className="text-4xl font-bold">DartScorer</Title>
+                    <Title className="text-4xl font-bold">Dart Scorer</Title>
                 </div>
 
                 <div className="mt-6">
