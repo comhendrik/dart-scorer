@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: dart-scorer
-          image: docker.io/comhendrik/dart-scorer-frontend-only:1.0.0
+          image: comhendrik/dart-scorer-frontend-only:1.0.0  # Replace with your Docker Hub image
           ports:
             - containerPort: 80
