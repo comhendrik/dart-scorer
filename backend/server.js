@@ -4,7 +4,7 @@ const cors = require("cors");
 const { Pool } = require("pg");
 
 const app = express();
-const port = 3000;
+const port = 3001;
 
 // Middleware
 app.use(cors());
@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 // PostgreSQL Connection Pool
 const pool = new Pool({
     user: "user", // Same as POSTGRES_USER in Docker
-    host: process.env.DATABASE_HOST, // Host of PostgreSQL Docker container / name of docker container
+    host: process.env.DATABASE_HOST || "localhost", // Host of PostgreSQL Docker container / name of docker container
     database: "mydatabase", // Same as POSTGRES_DB in Docker
     password: "password", // Same as POSTGRES_PASSWORD in Docker
     port: 5432, // Default PostgreSQL port
@@ -23,6 +23,16 @@ const pool = new Pool({
 app.get("/leaderboard", async (req, res) => {
     try {
         const result = await pool.query("SELECT * FROM leaderboard ORDER BY score DESC");
+        res.json(result.rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error fetching data");
+    }
+});
+
+app.get("/users", async (req, res) => {
+    try {
+        const result = await pool.query("SELECT * FROM users ORDER BY username DESC");
         res.json(result.rows);
     } catch (err) {
         console.error(err);
