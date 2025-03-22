@@ -6,9 +6,10 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/16/solid";
 import GameMode from "../interfaces/GameMode";
 interface GameMenuProps {
     onStartGame: (playerNames: string[], gameMode: {}, legLength: number, setLength: number, isDoubleOut: boolean) => {};
+    setShowLeaderBoard: (show: boolean) => {}
 }
 
-function GameMenu({ onStartGame } : GameMenuProps) {
+function GameMenu({ onStartGame, setShowLeaderBoard } : GameMenuProps) {
     const [playerNames, setPlayerNames] = useState(['']);
     const [selectedMode, setSelectedMode] = useState(0);
     const [doubleOut, setDoubleOut] = useState(false)
@@ -149,8 +150,17 @@ function GameMenu({ onStartGame } : GameMenuProps) {
                         disabled={playerNames.length === 0}
                         color={playerNames.length === 0 ? "gray" : "blue"}
                         onClick={() => onStartGame(playerNames, gameModes[selectedMode], legs, sets, doubleOut)}
+                        className="m-4"
                     >
                         Play
+                    </Button>
+                    <Button
+                        disabled={playerNames.length === 0}
+                        color={playerNames.length === 0 ? "gray" : "blue"}
+                        onClick={() => setShowLeaderBoard(true)}
+                        className="m-4"
+                    >
+                        Leaderboard
                     </Button>
                 </div>
 

@@ -2,13 +2,11 @@ import React, {useState} from "react";
 import GameMenu from "./components/GameMenu";
 import DartScoreSelector from "./components/DartScoreSelector";
 import AroundTheClock from "./components/AroundTheClock";
-import Leaderboard from "./components/Leaderboard";
-import {Button} from "@tremor/react";
 import UserData from "./components/UserData";
 
 function App() {
   const [showMenu, setShowMenu] = useState(true);
-  const [showLeaderboard, setShowLeaderboard] = useState(true);
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [playerNames, setPlayerNames] = useState(['']);
   const [legLength, setLegLength] = useState(0);
   const [setLength, setSetLength] = useState(0);
@@ -37,14 +35,12 @@ function App() {
 
    if (showLeaderboard) return (
        <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-500 to-indigo-500">
-           <UserData/>
-           <Button onClick={() => setShowLeaderboard(false)}>Back</Button>
+           <UserData setShowLeaderboard={setShowLeaderboard}/>
        </div>
    );
     if (showMenu) return (
         <div>
-            <GameMenu onStartGame={onStartGame}/>
-            <Button onClick={() => setShowLeaderboard(true)}>Leaderboard</Button>
+            <GameMenu onStartGame={onStartGame} setShowLeaderBoard={setShowLeaderboard}/>
         </div>
     );
 

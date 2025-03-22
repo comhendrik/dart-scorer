@@ -8,10 +8,15 @@ import {
     CategoryBar,
     Select,
     SelectItem,
+    Button
 } from "@tremor/react";
 import { gamesService } from "../service/GamesService";
 
-const Leaderboard = () => {
+interface LeaderboardProps {
+    setShowLeaderboard: (show: boolean) => {}
+}
+
+function Leaderboard({ setShowLeaderboard } : LeaderboardProps) {
     const [users, setUsers] = useState<{ id: number; username: string }[]>([]);
     const [selectedUser, setSelectedUser] = useState<{"id": number, "username": string} | null>(null);
     const [gameData, setGameData] = useState<{}[]>([]);
@@ -138,6 +143,16 @@ const Leaderboard = () => {
                 </p>
                 <CategoryBar values={[20, 20, 30, 30, 80]} colors={["rose", "orange", "yellow", "emerald", "green"]} markerValue={62} />
             </Card>
+
+            <div className="flex justify-center mt-6">
+                    <Button
+                        color={"blue"}
+                        onClick={() => setShowLeaderboard(false)}
+                        className="m-4"
+                    >
+                        Back
+                    </Button>
+                </div>
         </Card>
     );
 };
