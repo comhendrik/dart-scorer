@@ -50,7 +50,7 @@ For a target score of 170, suggested throws might include:
    ```  
 2. Navigate to the project directory:
    ```bash
-   cd dart-scorer
+   cd dart-scorer/frontend
    ```  
 3. Install dependencies:
    ```bash
@@ -59,6 +59,18 @@ For a target score of 170, suggested throws might include:
 4. Start the development server:
    ```bash
    npm start
+   ```  
+5. Navigate to the project directory:
+   ```bash
+   cd dart-scorer/backend
+   ```  
+6. Install dependencies:
+   ```bash
+   npm install
+   ```  
+7. Start the development server:
+   ```bash
+   node server.js
    ```  
 
 ## 🌟 Contributing
