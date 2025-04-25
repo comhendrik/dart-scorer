@@ -61,29 +61,6 @@ For a target score of 170, suggested throws might include:
    npm start
    ```  
 
----
-
-## 🚢  Docker Installation
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/comhendrik/dart-scorer.git
-   ```  
-2. Navigate to the project directory:
-   ```bash
-   cd dart-scorer
-   ```  
-3. Create Docker Image:
-   ```bash
-   docker build -t dart-scorer:latest .
-   ```  
-4. Run Docker Image:
-   ```bash
-   docker run -dp 80:80 --name dart-scorer --restart=always dart-scorer:latest
-   ```  
-
----
-
 ## 🌟 Contributing
 
 Contributions are welcome! Feel free to open an issue or submit a pull request to improve the project.
