@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import GameMenu from "./components/GameMenu";
 import DartScoreSelector from "./components/DartScoreSelector";
 import AroundTheClock from "./components/AroundTheClock";
@@ -14,9 +14,31 @@ function App() {
   const [setLength, setSetLength] = useState(0);
   const [isDoubleOut, setIsDoubleOut] = useState(false);
   const [gameMode, setGameMode] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [user, setUser] = useState(null);
+
+
+  useEffect(() => {
+    const handleUserChange = (user) => {
+      setIsLoading(true)
+      setUser(user)
+      setIsLoading(false);
+    };
+
+    userService.subscribe(handleUserChange);
+
+    // Cleanup on unmount
+    return () => {
+      userService.unsubscribe(handleUserChange);
+    };
+  }, []);
+
+  if (isLoading) {
+    return "Loading";
+  }
 
   // 🔒 Redirect to LandingPage if not logged in
-  if (!userService.isLoggedIn()) {
+  if (!user) {
     return <LandingPage />;
   }
 

@@ -11,10 +11,13 @@ export type Credentials = {
     password: string;
 };
 
+type UserChangeListener = (user: User | null) => void;
+
 class UserService {
     private maxRetries: number;
     private baseUrl: string;
     private currentUser: User | null;
+    private listeners: UserChangeListener[] = [];
 
     constructor(maxRetries: number = 3) {
         this.maxRetries = maxRetries;
@@ -22,32 +25,54 @@ class UserService {
         this.currentUser = null;
     }
 
-    /**
-     * Logs in a user and returns a JWT token.
-     * @param credentials - The user's login credentials.
-     * @returns A promise resolving to the authentication token.
-     */
     async login(credentials: Credentials): Promise<AuthResponse> {
         const res = await this.postWithRetry<AuthResponse>("/login", credentials);
         this.currentUser = res;
+        this.notifyListeners();
         return res;
     }
 
-    /**
-     * Registers a new user.
-     * @param credentials - The user's signup credentials.
-     * @returns A promise that resolves when signup is complete.
-     */
-    async signup(credentials: Credentials): Promise<void> {
-        await this.postWithRetry<void>("/register", credentials);
+    async signup(credentials: Credentials): Promise<AuthResponse> {
+        const res = await this.postWithRetry<AuthResponse>("/register", credentials);
+        this.currentUser = res;
+        this.notifyListeners();
+        return res;
+    }
+
+    logout(): void {
+        this.currentUser = null;
+        this.notifyListeners();
+    }
+
+    getToken(): string | undefined {
+        return this.currentUser?.token;
+    }
+
+    isLoggedIn(): boolean {
+        return this.currentUser != null;
     }
 
     /**
-     * Performs a POST request with retry logic.
-     * @param endpoint - The API endpoint.
-     * @param body - Request body data.
-     * @returns The response data.
+     * Subscribes a listener to user changes.
      */
+    subscribe(listener: UserChangeListener): void {
+        this.listeners.push(listener);
+    }
+
+    /**
+     * Unsubscribes a listener.
+     */
+    unsubscribe(listener: UserChangeListener): void {
+        this.listeners = this.listeners.filter((l) => l !== listener);
+    }
+
+    /**
+     * Notify all listeners about the current user change.
+     */
+    private notifyListeners(): void {
+        this.listeners.forEach((listener) => listener(this.currentUser));
+    }
+
     private async postWithRetry<T>(endpoint: string, body: any): Promise<T> {
         let attempts = 0;
         while (attempts < this.maxRetries) {
@@ -64,7 +89,6 @@ class UserService {
                 }
 
                 if (response.status === 204) {
-                    // No content expected (e.g., signup success)
                     return {} as T;
                 }
 
@@ -78,21 +102,7 @@ class UserService {
                 }
             }
         }
-
         throw new Error("Unexpected error: Retry logic failed.");
-    }
-
-    logout(): void {
-        this.currentUser = null;
-        window.location.reload();
-    }
-
-    getToken(): string | undefined {
-        return this.currentUser?.token;
-    }
-
-    isLoggedIn(): boolean {
-        return this.currentUser != null;
     }
 }
 

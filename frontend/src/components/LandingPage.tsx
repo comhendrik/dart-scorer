@@ -57,7 +57,7 @@ const LandingPage: React.FC = () => {
               setIsLoginVisible(!isLoginVisible);
               setIsRegisterVisible(false);
             }}
-            className="ml-2"
+            className="ml-2 bg-white text-blue-500"
           >
             {isLoginVisible ? "Close Login" : "Login"}
           </Button>
@@ -66,7 +66,7 @@ const LandingPage: React.FC = () => {
               setIsRegisterVisible(!isRegisterVisible);
               setIsLoginVisible(false);
             }}
-            className="ml-2"
+            className="ml-2 bg-white text-blue-500"
           >
             {isRegisterVisible ? "Close Register" : "Register"}
           </Button>

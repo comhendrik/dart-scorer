@@ -89,12 +89,24 @@ app.post("/register", async (req, res) => {
             "INSERT INTO users (username, password) VALUES ($1, $2) RETURNING id, username",
             [username, hashedPassword]
         );
-        res.status(201).json(result.rows[0]);
+
+        const user = result.rows[0];
+
+        // Create JWT
+        const token = jwt.sign(
+            { id: user.id, username: user.username },
+            JWT_SECRET,
+            { expiresIn: "1h" }
+        );
+
+        // Return token and user data
+        res.status(201).json({ token, id: user.id, username: user.username });
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: "Registration failed" });
     }
 });
+
 
 // Login
 app.post("/login", async (req, res) => {
@@ -113,7 +125,7 @@ app.post("/login", async (req, res) => {
         if (!match) return res.status(401).json({ error: "Invalid credentials" });
 
         const token = jwt.sign({ id: user.id, username: user.username }, JWT_SECRET, { expiresIn: "1h" });
-        res.json({ token, user });
+        res.json({ token, id: user.id, username: user.username });
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: "Login failed" });
