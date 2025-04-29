@@ -15,13 +15,14 @@ function App() {
   const [isDoubleOut, setIsDoubleOut] = useState(false);
   const [gameMode, setGameMode] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [user, setUser] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 
   useEffect(() => {
     const handleUserChange = (user) => {
-      setIsLoading(true)
-      setUser(user)
+      setIsLoading(true);
+      if (user) setIsLoggedIn(true);
+      else setIsLoggedIn(false);
       setIsLoading(false);
     };
 
@@ -38,7 +39,7 @@ function App() {
   }
 
   // 🔒 Redirect to LandingPage if not logged in
-  if (!user) {
+  if (!isLoggedIn) {
     return <LandingPage />;
   }
 

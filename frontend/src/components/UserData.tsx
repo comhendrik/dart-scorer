@@ -9,6 +9,7 @@ import {
     Button
 } from "@tremor/react";
 import { gamesService } from "../service/GamesService";
+import { userService } from "service/UserService";
 
 interface LeaderboardProps {
     setShowLeaderboard: (show: boolean) => {};
@@ -23,7 +24,9 @@ function Leaderboard({ setShowLeaderboard }: LeaderboardProps) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const data = await gamesService.fetchGames(1);
+                const userID = userService.getUserID();
+                if (userID === undefined) throw Error("No logged in user")
+                const data = await gamesService.fetchGames(userID);
                 const newGameData: {}[] = data.map((game: any) => ({
                     color: game.haswon ? "emerald" : "rose",
                     tooltip: game.haswon ? "Win" : "Loss",

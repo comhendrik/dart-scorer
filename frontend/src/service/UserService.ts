@@ -48,6 +48,10 @@ class UserService {
         return this.currentUser?.token;
     }
 
+    getUserID(): number | undefined {
+        return this.currentUser?.id;
+    }
+
     isLoggedIn(): boolean {
         return this.currentUser != null;
     }
