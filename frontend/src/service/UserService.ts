@@ -1,4 +1,5 @@
 import User from "interfaces/User";
+import NotyfService from "./NotyfService";
 
 export type AuthResponse = {
     id: number;
@@ -25,11 +26,16 @@ class UserService {
         this.currentUser = null;
     }
 
-    async login(credentials: Credentials): Promise<AuthResponse> {
-        const res = await this.postWithRetry<AuthResponse>("/login", credentials);
-        this.currentUser = res;
-        this.notifyListeners();
-        return res;
+    async login(credentials: Credentials): Promise<AuthResponse | undefined> {
+        try {
+            const res = await this.postWithRetry<AuthResponse>("/login", credentials);
+            this.currentUser = res;
+            this.notifyListeners();
+            return res
+        } catch (error) {
+            NotyfService.showError("Fehler beim Anmelden")
+            return undefined;
+        }
     }
 
     async signup(credentials: Credentials): Promise<AuthResponse> {
