@@ -21,7 +21,6 @@ function GameMenu({ onStartGame, setShowLeaderBoard }: GameMenuProps) {
     const gameModes: GameMode[] = [
         { id: 0, label: "301", count: 301 },
         { id: 1, label: "501", count: 501 },
-        { id: 2, label: "ATC", count: 0 },
     ];
 
     const handleAddPlayer = () => setPlayerNames([...playerNames, '']);

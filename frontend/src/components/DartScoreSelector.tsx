@@ -2,6 +2,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Card, Title, Button, Subtitle } from "@tremor/react";
 import GameMode from "../interfaces/GameMode";
 import { ForwardIcon, PlayCircleIcon } from "@heroicons/react/16/solid";
+import { gamesService } from "service/GamesService";
+import { userService } from "service/UserService";
 
 interface DartScoreSelectorProps {
     playerNames: string[];
@@ -167,6 +169,11 @@ function DartScoreSelector({ playerNames, onEndGame, gameMode, chosenLegLength, 
                 }
                 return updated;
             });
+            const user_id = userService.getUserID()
+            if (user_id !== undefined) {
+                gamesService.addGame(true, user_id);
+            }
+            
         }
 
         setScores(Array(playerNames.length).fill(301));

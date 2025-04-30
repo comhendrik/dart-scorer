@@ -45,18 +45,6 @@ const authenticateJWT = (req, res, next) => {
     }
 };
 
-
-// Routes
-app.get("/leaderboard", authenticateJWT, async (req, res) => {
-    try {
-        const result = await pool.query("SELECT * FROM leaderboard ORDER BY score DESC");
-        res.json(result.rows);
-    } catch (err) {
-        console.error(err);
-        res.status(500).send("Error fetching data");
-    }
-});
-
 app.get("/users", authenticateJWT, async (req, res) => {
     try {
         const result = await pool.query("SELECT * FROM users ORDER BY username DESC");
@@ -74,6 +62,26 @@ app.get("/games", authenticateJWT, async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).send("Error fetching data");
+    }
+});
+
+app.post("/games", authenticateJWT, async (req, res) => {
+    const { haswon, user_id } = req.body;
+
+    if (!user_id || !haswon) {
+        return res.status(400).send("Missing required fields");
+    }
+
+    try {
+        const result = await pool.query(
+            `INSERT INTO games (haswon, user_id)
+             VALUES ($1, $2) RETURNING *`,
+            [haswon, user_id]
+        );
+        res.status(201).json(result.rows[0]);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error creating game");
     }
 });
 
